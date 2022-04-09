@@ -3,12 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
-var booksRouter = require('./routes/books')
+var booksRouter = require('./routes/books');
+var connectionRouter = require('./routes/connection');
 
 var app = express();
 
@@ -27,6 +29,14 @@ app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/books', booksRouter);
+app.use('/connection', connectionRouter);
+
+// Connect mongoose and error handler
+main().catch(err => console.log(err));
+
+async function main() {
+  await mongoose.connect('mongodb://localhost:27017/test');
+}
 
 
 // catch 404 and forward to error handler
