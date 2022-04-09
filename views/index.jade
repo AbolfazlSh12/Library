@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  h2 This is library management system.
+  h2 Library management system.
   p Welcome to my site 
 
   a(href="./signUp")
@@ -15,3 +15,14 @@ block content
   br
   a(href="./profile") 
    button(type="button") Profile 
+  br
+  br
+  a(href="./books")
+    button(type="button") Books 
+  //- div(class="demo")
+    a(href="./books/action") - 
+      button(type="button") Action
+    a(href="./books/classic") - 
+      button(type="button") Classic 
+    a(href="./books/novel") - 
+      button(type="button") Novel
