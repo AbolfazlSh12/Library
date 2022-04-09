@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h1= "Sign Up Page"
+        form(action="/userSignUp" method="POST")
+        p Name :
+        input(type="text" name="name" placeholder="Enter your name ...")
+        p Family : 
+        input(type="text" name="family" placeholder="Enter your family ...")
+        p Username : 
+        input(type="text" name="username" placeholder="Enter your username ...")
+        p Email : 
+        input(type="email" name="email" placeholder="Enter your email ...")
+        p Family : 
+        input(type="text" name="family" placeholder="Password ...")
+        input(type="submit")
