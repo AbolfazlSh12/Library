@@ -1,10 +1,12 @@
 extends layout
 block content
   div(id = "loginForm")
-    h1(id="loginTxt")= "Login Page"
-    form(action="/userLogin" method="POST")
-    h2 Username :  
-      input(type="text" name="username" placeholder="Enter your username ..." required)
-    h2 Password : 
-      input(type="password" name="password" placeholder="Enter your password ..." required)
-    input(type="submit")
+      h1(id="loginTxt")= "Login Page"
+      hr(class="hr")
+      br
+      form(action="/auth/login" method="POST")
+        h2 Username :  
+          input(type="text" name="username" placeholder="Enter your username ..." required)
+        h2 Password : 
+          input(type="password" name="password" placeholder="Enter your password ..." required)
+        input(type="submit")
