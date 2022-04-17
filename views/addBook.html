@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon"/>
+    <title>Library</title>
+</head>
+<body>
+    <h1>Add Book To Library</h1>
+    <hr class="hr"/><br/>
+    <form action="/addBook" method="POST">
+        <h2>Name :</h2>
+        <input type="text" name="name" placeholder="Name ..." required="required"/>
+        <h2>Author : </h2>
+        <input type="text" name="author" placeholder="Author ..." required="required"/>
+        <h2>Category : </h2>
+        <input type="text" name="category" placeholder="Category ..." required="required"/>
+        <h2>Price : </h2>
+        <input type="number" name="price" placeholder="Price ..." required="required"/>
+        <h2>ISBN : </h2>
+        <input type="text" name="ISBN" placeholder="ISBN ..." required="required"/><br/><br/>
+        <input type="submit"/>
+    </form>
+</body>
+</html>
