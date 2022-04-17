@@ -13,6 +13,7 @@ import { authRouter } from "./routes/auth.js";
 import { bookRouter } from "./routes/books.js";
 // import { notFoundRouter } from "./routes/notFound.js";
 import { connectDatabase } from "./db.js";
+import { addBookRouter } from "./routes/addBook.js";
 
 connectDatabase();
 
@@ -32,6 +33,7 @@ app.use("/", indexRouter);
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/books", bookRouter);
+app.use("/addBook", addBookRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

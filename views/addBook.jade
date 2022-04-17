@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1= "Add Book To Library"
+    hr(class="hr")
+    br
+    form(action="/addBook" method="POST")
+        h2 Name :
+        input(type="text" name="name" placeholder="Name ..." required)
+        h2 Author : 
+        input(type="text" name="author" placeholder="Author ..." required)
+        h2 Category : 
+        input(type="text" name="category" placeholder="Category ..." required)
+        h2 Price : 
+        input(type="number" name="price" placeholder="Price ..." required)
+        h2 ISBN : 
+        input(type="text" name="ISBN" placeholder="ISBN ..." required)
+        br
+        br
+        input(type="submit")

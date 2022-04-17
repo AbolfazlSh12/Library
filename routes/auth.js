@@ -2,6 +2,7 @@ import express from "express";
 export const authRouter = express.Router();
 
 import { UserDataModel } from "../models/user-data.model.js";
+import rand from "random-key";
 
 authRouter.get("/login", function (req, res, next) {
   res.render("login");
@@ -18,13 +19,14 @@ authRouter.post("/login", function (req, res, next) {
   UserDataModel.find().then(console.log);
 
   UserDataModel.findOne({ username, password })
-    .then((user) => {
-      console.log(user);
+    .then(async (user) => {
       if (!user) {
         res.status(404).send("not found");
       } else {
-        // res.send("logged in");
-        return res.redirect('/');
+        const authKey = rand.generate(7);
+        user.authKey = authKey;
+        await user.save();
+        return res.send(authKey);
       }
     })
     .catch((err) => {
@@ -36,14 +38,22 @@ authRouter.post("/login", function (req, res, next) {
 
 authRouter.post("/signup", function (req, res, next) {
   const { name, family, username, email, password } = req.body;
-  const user = new UserDataModel({ name, family, username, email, password });
+  const user = new UserDataModel({
+    name,
+    family,
+    username,
+    email,
+    password,
+  });
   user
     .save()
-    .then(() => {
-      // res.send("signup");
-      return res.redirect('/');
+    .then(async (user) => {
+      const authKey = rand.generate(7);
+      user.authKey = authKey;
+      await user.save();
+      return res.send(authKey);
     })
     .catch(() => {
-      res.send("signup error");
+      res.send("Signup error !");
     });
 });

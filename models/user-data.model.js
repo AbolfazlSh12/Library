@@ -7,6 +7,7 @@ const userDataSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
+  authKey: String,
 });
 
 userDataSchema.methods.getFullName = function getFullName() {
