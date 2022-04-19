@@ -33,7 +33,7 @@
             required="required"
           />
         </h2>
-        <input type="submit"/>
+        <input type="submit" />
       </form>
     </div>
     <script>
@@ -58,10 +58,7 @@
         const key = await rawResponse.text();
 
         localStorage.setItem("token", key);
-
-        setTimeout(() => {
-          alert(localStorage.getItem("token"));
-        }, 1000);
+        localStorage.setItem("username", username);
       }
     </script>
   </body>

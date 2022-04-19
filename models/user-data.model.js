@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 
 const userDataSchema = new mongoose.Schema({
-  id: Number,
+  username: { type: String, unique: true },
   name: String,
   family: String,
-  username: String,
   email: String,
   password: String,
   authKey: String,

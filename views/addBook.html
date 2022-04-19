@@ -77,7 +77,8 @@
             category,
             price,
             isbn,
-            key: localStorage.getItem("key"),
+            username: localStorage.getItem("username"),
+            key: localStorage.getItem("token"),
           }),
         });
         if (rawResponse.status !== 200) {
