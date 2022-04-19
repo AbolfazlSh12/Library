@@ -10,18 +10,75 @@
 <body>
     <h1>SignUp to library !</h1>
     <hr class="hr"/><br/>
-    <form action="/auth/signup" method="POST">
-    <h2>Name :</h2>
-    <input type="text" name="name" placeholder="Name ..." required="required"/>
-    <h2>Family : </h2>
-    <input type="text" name="family" placeholder="Family ..." required="required"/>
-    <h2>Username : </h2>
-    <input type="text" name="username" placeholder="Username ..." required="required"/>
-    <h2>Email : </h2>
-    <input type="email" name="email" placeholder="Email ..." required="required"/>
-    <h2>Password : </h2>
-    <input type="password" name="password" placeholder="Password ..." required="required"/><br/><br/>
-    <input type="submit"/>
+    <form onsubmit="submitForm(event)">
+        <h2>Name :</h2>
+        <input
+            id="name"
+            type="text"
+            name="name" 
+            placeholder="Name ..." 
+            required="required"/>
+        <h2>Family : </h2>
+        <input
+            id="family"
+            type="text" 
+            name="family" 
+            placeholder="Family ..." 
+            required="required"/>
+        <h2>Username : </h2>
+        <input
+            id="username"
+            type="text" 
+            name="username" 
+            placeholder="Username ..." 
+            required="required"/>
+        <h2>Email : </h2>
+        <input
+            id="email" 
+            type="email" 
+            name="email" 
+            placeholder="Email ..." 
+            required="required"/>
+        <h2>Password : </h2>
+        <input 
+            id="password" 
+            type="password" 
+            name="password" 
+            placeholder="Password ..." 
+            required="required"/><br/><br/>
+        <input type="submit"/>
     </form>
+    <script>
+        async function submitForm(event) {
+          event.preventDefault();
+  
+          const name = document.getElementById("name").value;
+          const family = document.getElementById("family").value;
+          const username = document.getElementById("username").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          const rawResponse = await fetch("http://localhost:3000/auth/signup/", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name,family, username, email, password }),
+          });
+          if (rawResponse.status !== 200) {
+            alert("Failed to signup !");
+            return;
+          }
+  
+          const key = await rawResponse.text();
+  
+          localStorage.setItem("token", key);
+  
+          setTimeout(() => {
+            alert(localStorage.getItem("token"));
+          }, 1000);
+        }
+    </script>
 </body>
 </html>

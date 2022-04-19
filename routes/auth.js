@@ -14,9 +14,6 @@ authRouter.get("/signup", function (req, res, next) {
 
 authRouter.post("/login", function (req, res, next) {
   const { username, password } = req.body;
-  console.log({ username, password });
-
-  UserDataModel.find().then(console.log);
 
   UserDataModel.findOne({ username, password })
     .then(async (user) => {

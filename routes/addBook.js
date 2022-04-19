@@ -8,6 +8,7 @@ addBookRouter.get("/", function (req, res, next) {
   res.render("addBook");
 });
 
+/* Send Book Data To DB */
 addBookRouter.post("/", function (req, res, next) {
   const { name, author, category, price, ISBN } = req.body;
   const book = new BookDataModel({

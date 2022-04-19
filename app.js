@@ -1,8 +1,8 @@
-import createError from "http-errors";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import ejs from 'ejs';
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +21,6 @@ export const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-import ejs from 'ejs';
 app.engine('html', ejs.renderFile);
 app.set('view engine', 'html');
 
