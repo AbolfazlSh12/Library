@@ -1,6 +1,6 @@
 import express from "express";
 export const addBookRouter = express.Router();
-
+import jwt from "jsonwebtoken";
 import { BookDataModel } from "../models/book-data.model.js";
 
 /* GET Add Book page. */
@@ -21,21 +21,21 @@ addBookRouter.use(function (req, res, next) {
 
 /* Send Book Data To DB */
 addBookRouter.post("/", function (req, res, next) {
-  const { name, author, category, price, ISBN } = req.body;
+  const { name, author, category, price, isbn } = req.body;
   const book = new BookDataModel({
     name,
     author,
     category,
     price,
-    ISBN,
+    isbn,
   });
   book
     .save()
     .then((doc) => {
-      // console.log(doc);
       return res.redirect("/");
     })
-    .catch(() => {
-      res.send("Failed to add book !");
+    .catch((err) => {
+      console.log(err);
+      res.send("Failed1 to add book !");
     });
 });

@@ -48,14 +48,14 @@
       <input
         id="isbn"
         type="text"
-        name="ISBN"
+        name="isbn"
         placeholder="ISBN ..."
         required="required"
       />
       <br /><br />
       <input type="submit" />
     </form>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../javascripts/swal.js"></script>
     <script>
       async function submitForm(event) {
         event.preventDefault();
@@ -71,7 +71,7 @@
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "" + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             name,
@@ -84,12 +84,15 @@
         if (rawResponse.status !== 200) {
           swal({
             icon: "error",
-            title: "Failed to add book",
-            text: "Try again",
-            className: 'swal-wide',
+            title: "Failed to add book !",
+            text: "You have to login first",
+            className: "swal-wide",
           });
           return;
         }
+        swal("Good job!", "Success add book!", "success").then(function () {
+          window.location = "/";
+        });
       }
     </script>
   </body>

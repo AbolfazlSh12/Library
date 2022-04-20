@@ -54,7 +54,7 @@
       /><br /><br />
       <input type="submit" />
     </form>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../javascripts/swal.js"></script>
     <script>
       async function submitForm(event) {
         event.preventDefault();
@@ -79,7 +79,6 @@
         }
 
         const key = await rawResponse.text();
-
         localStorage.setItem("token", key);
         swal("Good job!", "Success signup!", "success").then(
           function () {
