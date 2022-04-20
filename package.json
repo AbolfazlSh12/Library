@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "devStart": "nodemon ./bin/www",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -11,9 +12,13 @@
     "ejs": "^3.1.6",
     "express": "~4.16.1",
     "http-errors": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
     "morgan": "~1.9.1",
     "random-key": "^0.3.2"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }

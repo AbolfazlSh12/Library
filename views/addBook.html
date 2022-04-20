@@ -70,6 +70,7 @@
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
             name,
@@ -77,8 +78,6 @@
             category,
             price,
             isbn,
-            username: localStorage.getItem("username"),
-            key: localStorage.getItem("token"),
           }),
         });
         if (rawResponse.status !== 200) {
