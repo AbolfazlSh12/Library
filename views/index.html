@@ -1,24 +1,38 @@
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/stylesheets/style.css"/>
-  <link rel="icon" href="../../images/icon.png" type="image/x-icon"/>
-  <title>Library</title>
-</head>
-<body>
-  <h1>Library</h1>
-  <h2>Library management system.</h2>
-  <p>Welcome to my site </p>
-  <a href="./auth/signup"><button type="button">Sign up</button></a>
-  <br/><br/>
-  <a href="./auth/login"><button type="button">Login</button></a>
-  <br/><br/>
-  <a href="./profile"><button type="button">Profile</button></a>
-  <br/><br/>
-  <a href="./books"><button type="button">Books</button></a>
-  <br/><br/>
-  <a href="./addBook"><button type="button">Add Book </button></a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+    <title>Library</title>
+  </head>
+  <body>
+    <h1>Library</h1>
+    <h2>Library management system.</h2>
+    <p>Welcome to my site</p>
+    <a href="./auth/signup" id="signup"
+      ><button type="button">Sign up</button></a
+    >
+    <br /><br />
+    <a href="./auth/login" id="login"><button type="button">Login</button></a>
+    <br /><br />
+    <a href="./profile" id="profile"><button type="button">Profile</button></a>
+    <br /><br />
+    <a href="./books" id="books"><button type="button">Books</button></a>
+    <br /><br />
+    <a href="./addBook" id="addBook"><button type="button">Add Book</button></a>
+  </body>
+  <script>
+    const key = localStorage.getItem("token");
+    if (key !== null) {
+      const login = document.getElementById('login');
+      login.style.display = "none";
+      const signup = document.getElementById('signup');
+      signup.style.display = "none";
+    }else {
+      const profile = document.getElementById('profile');
+      profile.style.display = "none";
+    }
+  </script>
 </html>

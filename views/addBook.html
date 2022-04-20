@@ -55,6 +55,7 @@
       <br /><br />
       <input type="submit" />
     </form>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
       async function submitForm(event) {
         event.preventDefault();
@@ -81,7 +82,12 @@
           }),
         });
         if (rawResponse.status !== 200) {
-          alert("Failed to adding book !");
+          swal({
+            icon: "error",
+            title: "Failed to add book",
+            text: "Try again",
+            className: 'swal-wide',
+          });
           return;
         }
       }
