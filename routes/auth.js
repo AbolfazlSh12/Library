@@ -3,7 +3,6 @@ export const authRouter = express.Router();
 
 import { UserDataModel } from "../models/user-data.model.js";
 import jwt from "jsonwebtoken";
-import rand from "random-key";
 
 authRouter.get("/login", function (req, res, next) {
   res.render("login");
@@ -45,10 +44,10 @@ authRouter.post("/signup", function (req, res, next) {
   user
     .save()
     .then(async (user) => {
-      const authKey = rand.generate(7);
-      user.authKey = authKey;
-      await user.save();
-      return res.send(authKey);
+      jwt.sign({ username }, "asdfsadfasdfasf", async (err, token) => {
+        await user.save();
+        return res.send(token);
+      });
     })
     .catch(() => {
       res.send("Signup error !");

@@ -131,6 +131,17 @@ img{
   border-top: 3px solid blue;
 }
 
+.swal-wide {
+  text-align: center;
+  width: fit-content;
+  padding: 20px;
+  border: solid rgb(251, 107, 107) 3px;
+  color: black;
+  margin: auto;
+}
+.swal-wide button {
+  background-color: #00B7FF;
+}
 /* Button Style */
 /* @import url("https://fonts.googleapis.com/css?family=Lato:400,700"); */
 

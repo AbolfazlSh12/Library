@@ -36,6 +36,7 @@
         <input type="submit" />
       </form>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
       async function submitForm(event) {
         event.preventDefault();
@@ -51,13 +52,21 @@
           body: JSON.stringify({ username, password }),
         });
         if (rawResponse.status !== 200) {
-          alert("wrong username and password");
+          swal({
+            icon: "error",
+            title: "Wrong username or password !",
+            text: "Try again",
+            className: 'swal-wide',
+          });
           return;
         }
 
         const key = await rawResponse.text();
 
         localStorage.setItem("token", key);
+        swal("Good job!", "Success login", "success").then(function () {
+          window.location = "/";
+        });
       }
     </script>
   </body>
