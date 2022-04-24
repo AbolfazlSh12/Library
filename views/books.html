@@ -1,38 +1,63 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/style.css"/>
-    <link rel="icon" href="../../images/icon.png" type="image/x-icon"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
     <title>Library</title>
-</head>
-<body>
-    <div class="demo">
-        <div class="book"><img src="../../images/book1.png" alt="book1"/>
-          <h3>Book 1</h3>
-          <h4>Author: Person 1</h4>
-          <h4>Price: 10$</h4>
-          <input class="rentBtn" type="button" value="Rent This Book"/>
-        </div>
-        <div class="book"><img src="../../images/book2.png" alt="book2"/>
-          <h3>Book 2</h3>
-          <h4>Author: Person 2</h4>
-          <h4>Price: 12$</h4>
-          <input class="rentBtn" type="button" value="Rent This Book"/>
-        </div>
-        <div class="book"><img src="../../images/book3.png" alt="book3"/>
-          <h3>Book 3</h3>
-          <h4>Author: Person 3</h4>
-          <h4>Price: 8$</h4>
-          <input class="rentBtn" type="button" value="Rent This Book"/>
-        </div>
-        <div class="book"><img src="../../images/book4.png" alt="book4"/>
-          <h3>Book 4</h3>
-          <h4>Author: Person 4</h4>
-          <h4>Price: 9$</h4>
-          <input class="rentBtn" type="button" value="Rent This Book"/>
-        </div>
-      </div>
-</body>
+    <style>
+      body {
+        background-color: rgb(225, 255, 244);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const getData = async () => {
+        const rawResponse = await fetch("http://localhost:3000/books/data", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          success: function (data) {
+            console.log("success", data);
+          },
+        });
+
+        const books = await rawResponse.json();
+
+        books.forEach((book) => {
+          const ul = document.createElement("ul");
+          const li = document.createElement("li");
+          const name = document.createElement("h1");
+          const author = document.createElement("h2");
+          const category = document.createElement("h3");
+          const isbn = document.createElement("h3");
+          const price = document.createElement("h3");
+          const get = document.createElement("h2")
+          get.setAttribute("id", "get");
+
+          li.innerText;
+          name.innerText = book.name;
+          author.innerText = ["Author: " + book.author];
+          category.innerText = ["Category: " + book.category];
+          isbn.innerText = ["Isbn: " + book.isbn];
+          price.innerText = ["Price: " + book.price + "$"];
+          get.innerText = "Buy this book !";
+
+          ul.appendChild(li);
+          li.appendChild(name);
+          li.appendChild(author);
+          li.appendChild(category);
+          li.appendChild(isbn);
+          li.appendChild(price);
+          li.appendChild(get);
+          document.body.appendChild(ul);
+        });
+      };
+      getData();
+    </script>
+  </body>
 </html>

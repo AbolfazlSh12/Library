@@ -52,6 +52,13 @@
         placeholder="Password ..."
         required="required"
       /><br /><br />
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        id="confirm_password"
+        required
+      />
+      <br /><br />
       <input type="submit" />
     </form>
     <script src="../javascripts/swal.js"></script>
@@ -80,12 +87,25 @@
 
         const key = await rawResponse.text();
         localStorage.setItem("token", key);
-        swal("Good job!", "Success signup!", "success").then(
-          function () {
-            window.location = "/";
-          }
-        );
+        swal("Good job!", "Success signup!", "success").then(function () {
+          window.location = "/";
+        });
       }
+    </script>
+    <script>
+      var password = document.getElementById("password"),
+        confirm_password = document.getElementById("confirm_password");
+
+      function validatePassword() {
+        if (password.value != confirm_password.value) {
+          confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+          confirm_password.setCustomValidity("");
+        }
+      }
+
+      password.onchange = validatePassword;
+      confirm_password.onkeyup = validatePassword;
     </script>
   </body>
 </html>
