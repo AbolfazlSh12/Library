@@ -20,7 +20,7 @@ authRouter.post("/login", function (req, res, next) {
       if (!user) {
         res.status(404).send("not found");
       } else {
-        jwt.sign({ username }, "asdfsadfasdfasf", async (err, token) => {
+        jwt.sign({ username }, "SecretKeyForJWT", async (err, token) => {
           await user.save();
           return res.send(token);
         });
@@ -44,7 +44,7 @@ authRouter.post("/signup", function (req, res, next) {
   user
     .save()
     .then(async (user) => {
-      jwt.sign({ username }, "asdfsadfasdfasf", async (err, token) => {
+      jwt.sign({ username }, "SecretKeyForJWT", async (err, token) => {
         await user.save();
         return res.send(token);
       });

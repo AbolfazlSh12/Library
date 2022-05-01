@@ -25,14 +25,14 @@ app.engine("html", ejs.renderFile);
 app.set("view engine", "html");
 
 app.use(logger("dev"));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/users", userRouter);
 app.use("/books", bookRouter);
 app.use("/addBook", addBookRouter);
 
@@ -51,3 +51,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+

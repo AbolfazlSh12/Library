@@ -36,8 +36,10 @@
           const category = document.createElement("h3");
           const isbn = document.createElement("h3");
           const price = document.createElement("h3");
-          const get = document.createElement("h2")
+          const get = document.createElement("h2");
           get.setAttribute("id", "get");
+          const buy = document.createElement("a");
+          buy.href = "https://www.google.com/";
 
           li.innerText;
           name.innerText = book.name;
@@ -45,6 +47,7 @@
           category.innerText = ["Category: " + book.category];
           isbn.innerText = ["Isbn: " + book.isbn];
           price.innerText = ["Price: " + book.price + "$"];
+          buy.innerText = ''
           get.innerText = "Buy this book !";
 
           ul.appendChild(li);
@@ -53,7 +56,8 @@
           li.appendChild(category);
           li.appendChild(isbn);
           li.appendChild(price);
-          li.appendChild(get);
+          buy.appendChild(get);
+          li.appendChild(buy);
           document.body.appendChild(ul);
         });
       };

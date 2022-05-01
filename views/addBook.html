@@ -11,7 +11,7 @@
     <h1>Add Book To Library</h1>
     <hr class="hr" />
     <br />
-    <form onsubmit="submitForm(event)">
+    <form onsubmit="submitForm(this, event)" id="form">
       <h2>Name :</h2>
       <input
         id="name"
@@ -53,46 +53,43 @@
         required="required"
       />
       <br /><br />
+      <input
+        id="image"
+        type="file"
+        name="image"
+        placeholder="Upload image"
+        required="required"
+      />
+      <br /><br />
       <input type="submit" />
     </form>
     <script src="../javascripts/swal.js"></script>
     <script>
-      async function submitForm(event) {
+      async function submitForm(form, event) {
         event.preventDefault();
 
-        const name = document.getElementById("name").value;
-        const author = document.getElementById("author").value;
-        const category = document.getElementById("category").value;
-        const price = document.getElementById("price").value;
-        const isbn = document.getElementById("isbn").value;
+        const formData = new FormData(form);
 
-        const rawResponse = await fetch("http://localhost:3000/addBook/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "" + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            name,
-            author,
-            category,
-            price,
-            isbn,
-          }),
-        });
-        if (rawResponse.status !== 200) {
-          swal({
-            icon: "error",
-            title: "Failed to add book !",
-            text: "You have to login first",
-            className: "swal-wide",
+        fetch("addBook", {
+          method: "post",
+          body: formData,
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        })
+          .then(function (res) {
+            return res.text();
+          })
+          .then(function (text) {
+            console.log(text);
+            swal("Good job!", "Success add book!", "success");
+          })
+          .catch(function (err) {
+            swal({
+              icon: "error",
+              title: "Failed to add book !",
+              text: "You have to login first",
+              className: "swal-wide",
+            });
           });
-          return;
-        }
-        swal("Good job!", "Success add book!", "success").then(function () {
-          window.location = "/";
-        });
       }
     </script>
   </body>
