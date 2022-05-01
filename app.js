@@ -14,6 +14,7 @@ import { bookRouter } from "./routes/books.js";
 // import { notFoundRouter } from "./routes/notFound.js";
 import { connectDatabase } from "./db.js";
 import { addBookRouter } from "./routes/addBook.js";
+import { mediaRouter } from "./routes/media.js";
 
 connectDatabase();
 
@@ -35,6 +36,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/books", bookRouter);
 app.use("/addBook", addBookRouter);
+app.use("/uploads", mediaRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -51,5 +53,3 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
-

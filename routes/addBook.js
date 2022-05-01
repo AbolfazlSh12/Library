@@ -2,14 +2,16 @@ import express from "express";
 import { isAuthenticated } from "../middlewares/auth.js";
 export const addBookRouter = express.Router();
 import { BookDataModel } from "../models/book-data.model.js";
-
+import { randomUUID } from "crypto";
 import multer from "multer";
+
+/* Set Destination For Multer */
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + ".png");
+    cb(null, randomUUID() + ".png");
   },
 });
 
@@ -28,6 +30,7 @@ addBookRouter.post("/", upload.single("image"), (req, res, next) => {
     error.httpStatusCode = 400;
     return next(error);
   }
+  const bookImage = file.filename;
   const { name, author, category, price, isbn } = req.body;
   console.log(req.body);
 
@@ -37,6 +40,7 @@ addBookRouter.post("/", upload.single("image"), (req, res, next) => {
     category,
     price,
     isbn,
+    bookImage,
   });
   book
     .save()
@@ -45,7 +49,7 @@ addBookRouter.post("/", upload.single("image"), (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      res.send("Failed1 to add book !");
+      res.send("Failed to add book !");
     });
 });
 
@@ -68,6 +72,6 @@ addBookRouter.post("/", isAuthenticated, function (req, res, next) {
     })
     .catch((err) => {
       console.log(err);
-      res.send("Failed1 to add book !");
+      res.send("Failed to add book !");
     });
 });

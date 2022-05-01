@@ -285,3 +285,15 @@ li #get {
   padding: 5px;
   background-color: white;
 }
+
+li #imageBox {
+  margin-top: 10px;
+}
+
+li #bookImage {
+  border: solid black 2px;
+  border-radius: 10px;
+  height: 50%;
+  /* width: 50%; */
+  /* height: min-content; */
+}

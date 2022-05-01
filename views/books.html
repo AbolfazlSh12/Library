@@ -29,6 +29,15 @@
         const books = await rawResponse.json();
 
         books.forEach((book) => {
+          // Book image
+          const box = document.createElement("div");
+          box.setAttribute("id", "imageBox");
+          const image = document.createElement("img");
+          image.setAttribute("id", "bookImage");
+          const bookImagePath = "../uploads/" + book.bookImage;
+          image.setAttribute("src", bookImagePath);
+
+          // Book info
           const ul = document.createElement("ul");
           const li = document.createElement("li");
           const name = document.createElement("h1");
@@ -36,6 +45,8 @@
           const category = document.createElement("h3");
           const isbn = document.createElement("h3");
           const price = document.createElement("h3");
+
+          // Buy book
           const get = document.createElement("h2");
           get.setAttribute("id", "get");
           const buy = document.createElement("a");
@@ -47,9 +58,11 @@
           category.innerText = ["Category: " + book.category];
           isbn.innerText = ["Isbn: " + book.isbn];
           price.innerText = ["Price: " + book.price + "$"];
-          buy.innerText = ''
+          buy.innerText = "";
           get.innerText = "Buy this book !";
 
+          li.appendChild(box);
+          box.appendChild(image);
           ul.appendChild(li);
           li.appendChild(name);
           li.appendChild(author);
