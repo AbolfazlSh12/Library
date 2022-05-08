@@ -2,7 +2,7 @@ import express from "express";
 export const authRouter = express.Router();
 import rand from "random-key";
 import nodemailer from "nodemailer";
-
+import "dotenv/config";
 import { UserDataModel } from "../models/user-data.model.js";
 import jwt from "jsonwebtoken";
 
@@ -48,7 +48,8 @@ authRouter.post("/login", function (req, res, next) {
       if (!user) {
         res.status(404).send("not found");
       } else {
-        jwt.sign({ username }, "SecretKeyForJWT", async (err, token) => {
+        jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
+          console.log(process.env.JWT_SECRET);
           await user.save();
           return res.send(token);
         });
@@ -107,12 +108,13 @@ authRouter.post("/signup", function (req, res, next) {
   user
     .save()
     .then(async (user) => {
-      jwt.sign({ username }, "SecretKeyForJWT", async (err, token) => {
+      jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
         await user.save();
         return res.send(token);
       });
     })
     .catch(() => {
+      res.status(409);
       res.send("Signup error !");
     });
 });
@@ -164,3 +166,6 @@ authRouter.post("/login/resetPassword", function (req, res) {
     }
   })
 })
+
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaVJvc3RhbWkiLCJpYXQiOjE2NTIwMDMzOTV9.rnanI1inaNPLdBXkNFs40xLM5YU5lVILsw3y91JW7aQ

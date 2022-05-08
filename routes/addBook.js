@@ -18,8 +18,8 @@ var storage = multer.diskStorage({
 let upload = multer({ storage: storage });
 
 /* GET Add Book page. */
-addBookRouter.get("/", function (req, res, next) {
-  res.render("addBook");
+addBookRouter.get("/", isAuthenticated, function (req, res, next) {
+    res.render("addBook");
 });
 
 /* Get Image From HTML */
@@ -42,6 +42,7 @@ addBookRouter.post("/", upload.single("image"), (req, res, next) => {
     isbn,
     bookImage,
   });
+
   book
     .save()
     .then((doc) => {
