@@ -25,7 +25,7 @@
   </body>
   <script>
     const key = localStorage.getItem("token");
-    if (key !== null) {
+    if (key) {
       const login = document.getElementById('login');
       login.style.display = "none";
       const signup = document.getElementById('signup');

@@ -6,6 +6,8 @@ const userDataSchema = new mongoose.Schema({
   family: String,
   email: String,
   password: String,
+  isVerified: { type: Boolean, default: false },
+  verifyEmailToken: String,
 });
 
 userDataSchema.methods.getFullName = function getFullName() {

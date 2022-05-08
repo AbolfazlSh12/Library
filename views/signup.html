@@ -65,7 +65,6 @@
     <script>
       async function submitForm(event) {
         event.preventDefault();
-
         const name = document.getElementById("name").value;
         const family = document.getElementById("family").value;
         const username = document.getElementById("username").value;
@@ -81,14 +80,18 @@
           body: JSON.stringify({ name, family, username, email, password }),
         });
         if (rawResponse.status !== 200) {
-          alert("Failed to signup !");
+          console.log("Hi");
           return;
         }
 
         const key = await rawResponse.text();
         localStorage.setItem("token", key);
-        swal("Good job!", "Success signup!", "success").then(function () {
-          window.location = "/";
+        swal(
+          "Please verify your email!",
+          "Success signup!",
+          "success"
+        ).then(function () {
+          window.location = "/auth/signup";
         });
       }
     </script>
