@@ -105,16 +105,36 @@ authRouter.post("/signup", function (req, res, next) {
 authRouter.post("/login", function (req, res, next) {
   const { username, password } = req.body;
 
+  const ownerName = process.env.SUPERUSER_USERNAME;
+  const ownerPass = process.env.SUPERUSER_PASSWORD;
+  if (username === ownerName) {
+    if (password !== ownerPass) {
+      return res.status(404).send("not found");
+    } else {
+      jwt.sign(
+        { username, role: "superuser" },
+        process.env.JWT_SECRET,
+        async (err, token) => {
+          return res.send(token);
+        }
+      );
+    }
+  }
+
   UserDataModel.findOne({ username, password })
     .then(async (user) => {
+      const role = user.role;
+      console.log(role);
       if (!user) {
         res.status(404).send("not found");
       } else {
-        jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
-          console.log(process.env.JWT_SECRET);
-          await user.save();
-          return res.send(token);
-        });
+        jwt.sign(
+          { username, role },
+          process.env.JWT_SECRET,
+          async (err, token) => {
+            return res.send(token);
+          }
+        );
       }
     })
     .catch((err) => {
