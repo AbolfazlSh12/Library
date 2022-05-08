@@ -20,16 +20,24 @@ authRouter.get("/signup/verify", function (req, res, next) {
   console.log(req.query.token);
   const username = req.query.username;
   const verifyEmailToken = req.query.token;
-  UserDataModel.findOne({username, verifyEmailToken})
-    .then(async (user) => {
-      if (!user) {
-        res.status(409).send("Incorrect Input");
-      }else {
-        user.isVerified = true;
-        await user.save();
-        res.redirect('/');
-      }
-    })
+  UserDataModel.findOne({ username, verifyEmailToken }).then(async (user) => {
+    if (!user) {
+      res.status(409).send("Incorrect Input");
+    } else {
+      user.isVerified = true;
+      await user.save();
+      res.redirect("/");
+    }
+  });
+});
+
+authRouter.get("/login/forgetPassword", function (req, res, next) {
+  res.render("forgetPass");
+});
+
+authRouter.get("/login/resetPassword", function (req, res, next) {
+  console.log("It's a reset password page");
+  res.render("resetPass");
 });
 
 authRouter.post("/login", function (req, res, next) {
@@ -108,3 +116,51 @@ authRouter.post("/signup", function (req, res, next) {
       res.send("Signup error !");
     });
 });
+
+/* Forget Password */
+authRouter.post("/login/forgetPassword", function (req, res, next) {
+  console.log("It's fine to forget your password");
+  const email = req.body.email;
+  console.log(email);
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    // host: "smtp.gmail.com",
+    // port: 465,
+    // secure: true,
+    auth: {
+      user: "simple.learner.110@gmail.com",
+      pass: "LiveTheMomentNow",
+    },
+  });
+
+  var mailOptions = {
+    from: "simple.learner.110@gmail.com",
+    to: email,
+    subject: "Rest Password Email !",
+    text: "http://localhost:3000/auth/login/resetPassword",
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+      res.send("sent");
+    }
+  });
+});
+
+/* Reset Password */
+authRouter.post("/login/resetPassword", function (req, res) {
+  const {username , password} = req.body;
+
+  UserDataModel.findOne({ username }).then(async (user) => {
+    if(!user) {
+      res.status(404).send("Not found !");
+    } else {
+      user.password = password;
+      await user.save();
+      res.redirect('/');
+    }
+  })
+})

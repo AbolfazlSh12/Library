@@ -1,0 +1,54 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+    <title>Library</title>
+  </head>
+  <body>
+    <form onsubmit="submitForm(event)">
+      <h2>Enter your email address :</h2>
+      <input
+        id="email"
+        type="email"
+        name="email"
+        placeholder="Email ..."
+        required="required"
+      />
+      <input type="submit" value="Send Password Reset Email" />
+    </form>
+    <script src="/javascripts/swal.js"></script>
+
+    <script>
+        async function submitForm(event) {
+          event.preventDefault();
+          const email = document.getElementById("email").value;
+  
+          const rawResponse = await fetch("http://localhost:3000/auth/login/forgetPassword/", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({email}),
+          });
+          console.log(email);
+          if (rawResponse.status !== 200) {
+            console.log("Hi");
+            return;
+          }
+  
+          swal(
+            "Reset password email sent !",
+            "Please reset your password !",
+            "success"
+          ).then(function () {
+            window.location = "/auth/login/forgetPassword";
+          });
+        }
+      </script>
+
+    </body>
+</html>
