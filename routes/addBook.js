@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
 let upload = multer({ storage: storage });
 
 /* GET Add Book page. */
-addBookRouter.get("/", isAuthenticated, function (req, res, next) {
+addBookRouter.get("/", function (req, res, next) {
     res.render("addBook");
 });
 

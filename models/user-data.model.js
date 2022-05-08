@@ -8,6 +8,11 @@ const userDataSchema = new mongoose.Schema({
   password: String,
   isVerified: { type: Boolean, default: false },
   verifyEmailToken: String,
+  role: { 
+    type: String, 
+    enum: ["admin" , "user" , "supperUser"],
+    default: "user" 
+  },
 });
 
 userDataSchema.methods.getFullName = function getFullName() {

@@ -40,27 +40,6 @@ authRouter.get("/login/resetPassword", function (req, res, next) {
   res.render("resetPass");
 });
 
-authRouter.post("/login", function (req, res, next) {
-  const { username, password } = req.body;
-
-  UserDataModel.findOne({ username, password })
-    .then(async (user) => {
-      if (!user) {
-        res.status(404).send("not found");
-      } else {
-        jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
-          console.log(process.env.JWT_SECRET);
-          await user.save();
-          return res.send(token);
-        });
-      }
-    })
-    .catch((err) => {
-      // console.log(err);
-      res.status(500).send();
-    });
-});
-
 const sendVerificationEmail = (address, code, username) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -89,6 +68,10 @@ const sendVerificationEmail = (address, code, username) => {
     }
   });
 };
+
+authRouter.get("/changeRole", function (req, res) {
+  res.render("changeRole");
+});
 
 /* Email Verification */
 authRouter.post("/signup", function (req, res, next) {
@@ -119,11 +102,31 @@ authRouter.post("/signup", function (req, res, next) {
     });
 });
 
+authRouter.post("/login", function (req, res, next) {
+  const { username, password } = req.body;
+
+  UserDataModel.findOne({ username, password })
+    .then(async (user) => {
+      if (!user) {
+        res.status(404).send("not found");
+      } else {
+        jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
+          console.log(process.env.JWT_SECRET);
+          await user.save();
+          return res.send(token);
+        });
+      }
+    })
+    .catch((err) => {
+      // console.log(err);
+      res.status(500).send();
+    });
+});
+
 /* Forget Password */
 authRouter.post("/login/forgetPassword", function (req, res, next) {
-  console.log("It's fine to forget your password");
   const email = req.body.email;
-  console.log(email);
+  // console.log(email);
   var transporter = nodemailer.createTransport({
     service: "gmail",
     // host: "smtp.gmail.com",
@@ -154,18 +157,36 @@ authRouter.post("/login/forgetPassword", function (req, res, next) {
 
 /* Reset Password */
 authRouter.post("/login/resetPassword", function (req, res) {
-  const {username , password} = req.body;
+  const { username, password } = req.body;
 
   UserDataModel.findOne({ username }).then(async (user) => {
-    if(!user) {
+    if (!user) {
       res.status(404).send("Not found !");
     } else {
       user.password = password;
       await user.save();
-      res.redirect('/');
+      res.redirect("/");
     }
-  })
-})
+  });
+});
 
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaVJvc3RhbWkiLCJpYXQiOjE2NTIwMDMzOTV9.rnanI1inaNPLdBXkNFs40xLM5YU5lVILsw3y91JW7aQ
+/* Set Role for users */
+authRouter.post("/changeRole", function (req, res) {
+  const { username, role } = req.body;
+  UserDataModel.findOne({ username })
+    .then(async (user) => {
+      if (!user) {
+        res.status(404).send("not found");
+      } else {
+        console.log("Successfully changed role");
+        user.role = role;
+        await user.save();
+        res.end();
+        return;
+      }
+    })
+    .catch((err) => {
+      // console.log(err);
+      res.status(500).send();
+    });
+});

@@ -80,12 +80,11 @@
           body: JSON.stringify({ name, family, username, email, password }),
         });
         if (rawResponse.status === 409) {
-          console.log("Erorr in form submitForm");
+          console.log("Error in form submitForm");
           swal({
             icon: "error",
             title: "Duplicate username !",
             text: "This username already exists",
-            // footer: '<a href="">Why do I have this issue?</a>',
           });
         } else if (rawResponse.status !== 200) {
           console.log("Error in signup !");
