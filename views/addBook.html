@@ -73,7 +73,6 @@
         fetch("addBook", {
           method: "post",
           body: formData,
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         })
           .then(function (res) {
             return res.text();

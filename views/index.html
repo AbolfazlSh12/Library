@@ -22,17 +22,41 @@
     <a href="./books" id="books"><button type="button">Books</button></a>
     <br /><br />
     <a href="./addBook" id="addBook"><button type="button">Add Book</button></a>
+    <br /><br />
+    <a href="./auth/changeRole" id="changeRole">
+      <button type="button">Change Role</button>
+    </a>
+    <br /><br />
+    <a id="logout" onclick="onLogoutClick()">
+      <button type="button">Logout</button>
+    </a>
   </body>
+  <script src="../javascripts/swal.js"></script>
+  <script src="../javascripts/cookie.js"></script>
   <script>
-    const key = localStorage.getItem("token");
+    const key = getCookie("token");
     if (key) {
-      const login = document.getElementById('login');
+      const login = document.getElementById("login");
       login.style.display = "none";
-      const signup = document.getElementById('signup');
+      const signup = document.getElementById("signup");
       signup.style.display = "none";
-    }else {
-      const profile = document.getElementById('profile');
+    } else {
+      const profile = document.getElementById("profile");
       profile.style.display = "none";
+      const logout = document.getElementById("logout");
+      logout.style.display = "none";
+    }
+  </script>
+  <script>
+    function onLogoutClick() {
+      swal(
+        "successfully logged out !",
+        "You are now logged out.",
+        "success"
+      ).then(function () {
+        fetch("/auth/logout");
+        window.location = "/";
+      });
     }
   </script>
 </html>

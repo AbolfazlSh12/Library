@@ -6,6 +6,9 @@ import "dotenv/config";
 import { UserDataModel } from "../models/user-data.model.js";
 import jwt from "jsonwebtoken";
 import jwt_decode from "jwt-decode";
+import { isAuthenticated } from "../middlewares/auth.js";
+import cookieParser from 'cookie-parser';
+authRouter.use(cookieParser());
 
 authRouter.get("/login", function (req, res, next) {
   res.render("login");
@@ -17,8 +20,8 @@ authRouter.get("/signup", function (req, res, next) {
 
 authRouter.get("/signup/verify", function (req, res, next) {
   // res.render("verify");
-  console.log(req.query.username);
-  console.log(req.query.token);
+  // console.log(req.query.username);
+  // console.log(req.query.token);
   const username = req.query.username;
   const verifyEmailToken = req.query.token;
   UserDataModel.findOne({ username, verifyEmailToken }).then(async (user) => {
@@ -70,18 +73,22 @@ const sendVerificationEmail = (address, code, username) => {
   });
 };
 
-authRouter.get("/changeRole", function (req, res) {
-  console.log(req.headers.cookie);
-  const index = req.headers.cookie.indexOf("token") + 6;
-  const token = req.headers.cookie.slice(index);
-  console.log(token);
+authRouter.get("/changeRole", isAuthenticated, function (req, res) {
+  const token = req.cookies.token;
+  // console.log("Token is : ", token);
   const decoded = jwt_decode(token);
-  console.log(decoded);
+  console.log("Decoded token is : ", decoded);
   if (decoded.username == process.env.SUPERUSER_USERNAME) {
     res.render("changeRole");
   } else {
     return res.status(403).send("Forbidden Page !");
   }
+});
+
+authRouter.get("/logout", function (req, res, next) {
+  res.clearCookie("token");
+  res.redirect("/");
+  // res.end();
 });
 
 /* Email Verification */
@@ -130,12 +137,12 @@ authRouter.post("/login", function (req, res, next) {
         { username, role: "owner" },
         process.env.JWT_SECRET,
         async (err, token) => {
-          const decoded = jwt_decode(token);
-          console.log(token);
+          // console.log(token);
           res.cookie("token", token);
           return res.send(token);
         }
       );
+      // console.log(`Token is { ${req.headers.cookie} }`);
     }
   }
 
@@ -153,6 +160,7 @@ authRouter.post("/login", function (req, res, next) {
             return res.send(token);
           }
         );
+        // console.log(`Token is { ${req.headers.cookie} }`);
       }
     })
     .catch((err) => {
@@ -209,10 +217,10 @@ authRouter.post("/login/resetPassword", function (req, res) {
 });
 
 /* Set Role for users */
-authRouter.post("/changeRole", function (req, res) {
+authRouter.post("/changeRole", isAuthenticated, function (req, res) {
   const index = req.headers.cookie.indexOf("token") + 6;
   const token = req.headers.cookie.slice(index);
-  decoded = jwt_decode(token);
+  const decoded = jwt_decode(token);
   if (decoded.role === "owner") {
     const { username, role } = req.body;
     UserDataModel.findOne({ username })

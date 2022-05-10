@@ -2,15 +2,20 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 export const isAuthenticated = (req, res, next) => {
-  const token = req.headers?.Authorization || req.headers?.authorization;
+  const token = req.cookies?.token;
   if (!token) {
-    res.sendStatus(403).json({ error: "No credentials sent!" });
+    return res.status(403).send("Forbidden");
   }
-  jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      res.sendStatus(403).json({ error: "No credentials sent!" });
+
+  jwt.verify(
+    token.replace("Bearer ", ""),
+    process.env.JWT_SECRET,
+    (err, user) => {
+      if (err) {
+        return res.status(401).send("Unauthorized");
+      }
+      req.user = user;
+      return next();
     }
-    req.user = user;
-    next();
-  });
+  );
 };

@@ -64,7 +64,6 @@
 
         const key = await rawResponse.text();
 
-        localStorage.setItem("token", key);
         swal("Good job!", "Success login", "success").then(function () {
           window.location = "/";
         });

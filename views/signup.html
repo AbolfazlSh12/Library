@@ -91,7 +91,6 @@
           return;
         } else {
           const key = await rawResponse.text();
-          localStorage.setItem("token", key);
           swal("Please verify your email!", "Success signup!", "success").then(
             function () {
               window.location = "/auth/signup";
