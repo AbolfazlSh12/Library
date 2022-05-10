@@ -5,6 +5,7 @@ import nodemailer from "nodemailer";
 import "dotenv/config";
 import { UserDataModel } from "../models/user-data.model.js";
 import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
 
 authRouter.get("/login", function (req, res, next) {
   res.render("login");
@@ -70,36 +71,50 @@ const sendVerificationEmail = (address, code, username) => {
 };
 
 authRouter.get("/changeRole", function (req, res) {
-  res.render("changeRole");
+  console.log(req.headers.cookie);
+  const index = req.headers.cookie.indexOf("token") + 6;
+  const token = req.headers.cookie.slice(index);
+  console.log(token);
+  const decoded = jwt_decode(token);
+  console.log(decoded);
+  if (decoded.username == process.env.SUPERUSER_USERNAME) {
+    res.render("changeRole");
+  } else {
+    return res.status(403).send("Forbidden Page !");
+  }
 });
 
 /* Email Verification */
 authRouter.post("/signup", function (req, res, next) {
   const { email, username } = req.body;
-  const random = rand.generate(6);
-  sendVerificationEmail(email, random, username);
+  if (username == process.env.SUPERUSER_USERNAME) {
+    res.status(409).send("Duplicate username !");
+  } else {
+    const random = rand.generate(6);
+    sendVerificationEmail(email, random, username);
 
-  const { name, family, password } = req.body;
-  const user = new UserDataModel({
-    name,
-    family,
-    username,
-    email,
-    password,
-    verifyEmailToken: random,
-  });
-  user
-    .save()
-    .then(async (user) => {
-      jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
-        await user.save();
-        return res.send(token);
-      });
-    })
-    .catch(() => {
-      res.status(409);
-      res.send("Signup error !");
+    const { name, family, password } = req.body;
+    const user = new UserDataModel({
+      name,
+      family,
+      username,
+      email,
+      password,
+      verifyEmailToken: random,
     });
+    user
+      .save()
+      .then(async (user) => {
+        jwt.sign({ username }, process.env.JWT_SECRET, async (err, token) => {
+          await user.save();
+          return res.send(token);
+        });
+      })
+      .catch(() => {
+        res.status(409);
+        res.send("Signup error !");
+      });
+  }
 });
 
 authRouter.post("/login", function (req, res, next) {
@@ -112,9 +127,12 @@ authRouter.post("/login", function (req, res, next) {
       return res.status(404).send("not found");
     } else {
       jwt.sign(
-        { username, role: "superuser" },
+        { username, role: "owner" },
         process.env.JWT_SECRET,
         async (err, token) => {
+          const decoded = jwt_decode(token);
+          console.log(token);
+          res.cookie("token", token);
           return res.send(token);
         }
       );
@@ -124,7 +142,6 @@ authRouter.post("/login", function (req, res, next) {
   UserDataModel.findOne({ username, password })
     .then(async (user) => {
       const role = user.role;
-      console.log(role);
       if (!user) {
         res.status(404).send("not found");
       } else {
@@ -132,6 +149,7 @@ authRouter.post("/login", function (req, res, next) {
           { username, role },
           process.env.JWT_SECRET,
           async (err, token) => {
+            res.cookie("token", token);
             return res.send(token);
           }
         );
@@ -192,21 +210,26 @@ authRouter.post("/login/resetPassword", function (req, res) {
 
 /* Set Role for users */
 authRouter.post("/changeRole", function (req, res) {
-  const { username, role } = req.body;
-  UserDataModel.findOne({ username })
-    .then(async (user) => {
-      if (!user) {
-        res.status(404).send("not found");
-      } else {
-        console.log("Successfully changed role");
-        user.role = role;
-        await user.save();
-        res.end();
-        return;
-      }
-    })
-    .catch((err) => {
-      // console.log(err);
-      res.status(500).send();
-    });
+  const index = req.headers.cookie.indexOf("token") + 6;
+  const token = req.headers.cookie.slice(index);
+  decoded = jwt_decode(token);
+  if (decoded.role === "owner") {
+    const { username, role } = req.body;
+    UserDataModel.findOne({ username })
+      .then(async (user) => {
+        if (!user) {
+          res.status(404).send("not found");
+        } else {
+          console.log("Successfully changed role");
+          user.role = role;
+          await user.save();
+          res.end();
+          return;
+        }
+      })
+      .catch((err) => {
+        // console.log(err);
+        res.status(500).send();
+      });
+  }
 });
