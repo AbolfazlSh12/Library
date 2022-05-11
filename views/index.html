@@ -1,19 +1,19 @@
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
     <title>Library</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>Library</h1>
     <h2>Library management system.</h2>
     <p>Welcome to my site</p>
-    <a href="./auth/signup" id="signup"
-      ><button type="button">Sign up</button></a
-    >
+    <a href="./auth/signup" id="signup"><button type="button">Sign up</button></a>
     <br /><br />
     <a href="./auth/login" id="login"><button type="button">Login</button></a>
     <br /><br />
@@ -21,42 +21,67 @@
     <br /><br />
     <a href="./books" id="books"><button type="button">Books</button></a>
     <br /><br />
-    <a href="./addBook" id="addBook"><button type="button">Add Book</button></a>
+    <a id="addBook" onclick="login()" id="addBook"><button type="button">Add Book</button></a>
     <br /><br />
     <a href="./auth/changeRole" id="changeRole">
-      <button type="button">Change Role</button>
+        <button type="button">Change Role</button>
     </a>
     <br /><br />
     <a id="logout" onclick="onLogoutClick()">
-      <button type="button">Logout</button>
+        <button type="button">Logout</button>
     </a>
-  </body>
-  <script src="../javascripts/swal.js"></script>
-  <script src="../javascripts/cookie.js"></script>
-  <script>
+</body>
+<script src="../javascripts/swal.js"></script>
+<script src="../javascripts/cookie.js"></script>
+<script>
     const key = getCookie("token");
     if (key) {
-      const login = document.getElementById("login");
-      login.style.display = "none";
-      const signup = document.getElementById("signup");
-      signup.style.display = "none";
+        const login = document.getElementById("login");
+        login.style.display = "none";
+        const signup = document.getElementById("signup");
+        signup.style.display = "none";
     } else {
-      const profile = document.getElementById("profile");
-      profile.style.display = "none";
-      const logout = document.getElementById("logout");
-      logout.style.display = "none";
+        const profile = document.getElementById("profile");
+        profile.style.display = "none";
+        const logout = document.getElementById("logout");
+        logout.style.display = "none";
     }
-  </script>
-  <script>
+
+    function login() {
+        fetch("/addBook").then(function (response) {
+            if (response.status == 401) {
+                // console.log(getCookie("token"));
+                // console.log("Hi");
+                swal("You'r not logged in !", "You have to login firs.", "error").then(function () {
+                    window.location = "/auth/login?next=addBook";
+                });
+            } else if (response.status == 403) {
+                swal("You'r not Admin !", "Only Admin can Add Book!", "error").then(function () {
+                    window.location = "/";
+                });
+            }else {
+                window.location = "/addBook";
+            }
+        })
+        // const key = getCookie("token");
+        // if (key) {
+        //     window.location = "/addBook";
+        //     return;
+        // }
+
+    }
+</script>
+<script>
     function onLogoutClick() {
-      swal(
-        "successfully logged out !",
-        "You are now logged out.",
-        "success"
-      ).then(function () {
-        fetch("/auth/logout");
-        window.location = "/";
-      });
+        swal(
+            "successfully logged out !",
+            "You are now logged out.",
+            "success"
+        ).then(function () {
+            fetch("/auth/logout");
+            window.location = "/";
+        });
     }
-  </script>
+</script>
+
 </html>

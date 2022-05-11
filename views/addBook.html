@@ -1,95 +1,62 @@
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
     <title>Library</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>Add Book To Library</h1>
     <hr class="hr" />
     <br />
     <form onsubmit="submitForm(this, event)" id="form">
-      <h2>Name :</h2>
-      <input
-        id="name"
-        type="text"
-        name="name"
-        placeholder="Name ..."
-        required="required"
-      />
-      <h2>Author :</h2>
-      <input
-        id="author"
-        type="text"
-        name="author"
-        placeholder="Author ..."
-        required="required"
-      />
-      <h2>Category :</h2>
-      <input
-        id="category"
-        type="text"
-        name="category"
-        placeholder="Category ..."
-        required="required"
-      />
-      <h2>Price :</h2>
-      <input
-        id="price"
-        type="number"
-        name="price"
-        placeholder="Price ..."
-        required="required"
-      />
-      <h2>ISBN :</h2>
-      <input
-        id="isbn"
-        type="text"
-        name="isbn"
-        placeholder="ISBN ..."
-        required="required"
-      />
-      <br /><br />
-      <input
-        id="image"
-        type="file"
-        name="image"
-        placeholder="Upload image"
-        required="required"
-      />
-      <br /><br />
-      <input type="submit" />
+        <h2>Name :</h2>
+        <input id="name" type="text" name="name" placeholder="Name ..." required="required" />
+        <h2>Author :</h2>
+        <input id="author" type="text" name="author" placeholder="Author ..." required="required" />
+        <h2>Category :</h2>
+        <input id="category" type="text" name="category" placeholder="Category ..." required="required" />
+        <h2>Price :</h2>
+        <input id="price" type="number" name="price" placeholder="Price ..." required="required" />
+        <h2>ISBN :</h2>
+        <input id="isbn" type="text" name="isbn" placeholder="ISBN ..." required="required" />
+        <br /><br />
+        <input id="image" type="file" name="image" placeholder="Upload image" required="required" />
+        <br /><br />
+        <input type="submit" />
     </form>
     <script src="../javascripts/swal.js"></script>
     <script>
-      async function submitForm(form, event) {
-        event.preventDefault();
+        async function submitForm(form, event) {
+            event.preventDefault();
 
-        const formData = new FormData(form);
 
-        fetch("addBook", {
-          method: "post",
-          body: formData,
-        })
-          .then(function (res) {
-            return res.text();
-          })
-          .then(function (text) {
-            // console.log(text);
-            swal("Good job!", "Success add book!", "success");
-          })
-          .catch(function (err) {
-            swal({
-              icon: "error",
-              title: "Failed to add book !",
-              text: "You have to login first",
-              className: "swal-wide",
-            });
-          });
-      }
+            const formData = new FormData(form);
+            fetch("addBook", {
+                    method: "post",
+                    body: formData,
+                })
+                .then(function(res) {
+                    return res.text();
+                })
+                .then(function(text) {
+                    // console.log(text);
+                    swal("Good job!", "Success add book!", "success");
+                })
+                .catch(function(err) {
+                    swal({
+                        icon: "error",
+                        title: "Failed to add book !",
+                        text: "You have to login first",
+                        className: "swal-wide",
+                    });
+                });
+        }
     </script>
-  </body>
+</body>
+
 </html>
