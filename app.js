@@ -13,7 +13,7 @@ import { authRouter } from "./routes/auth.js";
 import { bookRouter } from "./routes/books.js";
 // import { notFoundRouter } from "./routes/notFound.js";
 import { connectDatabase } from "./db.js";
-import { addBookRouter } from "./routes/addBook.js";
+// import { addBookRouter } from "./routes/addBook.js";
 import { mediaRouter } from "./routes/media.js";
 
 connectDatabase();
@@ -35,7 +35,7 @@ app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/books", bookRouter);
-app.use("/addBook", addBookRouter);
+// app.use("/addBook", addBookRouter);
 app.use("/uploads", mediaRouter);
 
 // catch 404 and forward to error handler

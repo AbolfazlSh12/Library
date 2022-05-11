@@ -37,17 +37,19 @@
 
             const formData = new FormData(form);
             fetch("addBook", {
-                    method: "post",
-                    body: formData,
-                })
-                .then(function(res) {
+                method: "post",
+                body: formData,
+            })
+                .then(function (res) {
                     return res.text();
                 })
-                .then(function(text) {
+                .then(function (text) {
                     // console.log(text);
-                    swal("Good job!", "Success add book!", "success");
+                    swal("Good job!", "Success add book!", "success").then(function () {
+                        window.location = "/books";
+                    });
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     swal({
                         icon: "error",
                         title: "Failed to add book !",

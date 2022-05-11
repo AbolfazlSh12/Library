@@ -21,8 +21,6 @@
     <br /><br />
     <a href="./books" id="books"><button type="button">Books</button></a>
     <br /><br />
-    <a id="addBook" onclick="login()" id="addBook"><button type="button">Add Book</button></a>
-    <br /><br />
     <a href="./auth/changeRole" id="changeRole">
         <button type="button">Change Role</button>
     </a>
@@ -45,30 +43,6 @@
         profile.style.display = "none";
         const logout = document.getElementById("logout");
         logout.style.display = "none";
-    }
-
-    function login() {
-        fetch("/addBook").then(function (response) {
-            if (response.status == 401) {
-                // console.log(getCookie("token"));
-                // console.log("Hi");
-                swal("You'r not logged in !", "You have to login firs.", "error").then(function () {
-                    window.location = "/auth/login?next=addBook";
-                });
-            } else if (response.status == 403) {
-                swal("You'r not Admin !", "Only Admin can Add Book!", "error").then(function () {
-                    window.location = "/";
-                });
-            }else {
-                window.location = "/addBook";
-            }
-        })
-        // const key = getCookie("token");
-        // if (key) {
-        //     window.location = "/addBook";
-        //     return;
-        // }
-
     }
 </script>
 <script>
