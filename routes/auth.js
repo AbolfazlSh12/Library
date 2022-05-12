@@ -136,6 +136,7 @@ authRouter.post("/login", function(req, res, next) {
     const ownerName = process.env.SUPERUSER_USERNAME;
     const ownerPass = process.env.SUPERUSER_PASSWORD;
     if (username === ownerName) {
+        console.log("Hello owner");
         if (password !== ownerPass) {
             return res.status(404).send("not found");
         } else {
@@ -147,7 +148,7 @@ authRouter.post("/login", function(req, res, next) {
                     return res.send(token);
                 }
             );
-            console.log(`Token is { ${req.cookies} }`);
+            // console.log(`Token is { ${req.cookies} }`);
         }
     }
 

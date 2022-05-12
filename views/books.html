@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <a href="./books/addBook" id="addBook" onclick="login()"><button type="button">Add Book</button></a>
+  <a id="addBook" onclick="login()"><button type="button">Add Book</button></a>
   <script src="./javascripts/swal.js"></script>
   <script>
     const getData = async () => {
@@ -84,19 +84,15 @@
     function login() {
       fetch("/books/addBook").then(function (response) {
         if (response.status == 401) {
-          alert("Hello add your");
           // console.log(getCookie("token"));
-          // console.log("Hi");
           swal("You'r not logged in !", "You have to login firs.", "error").then(function () {
             window.location = "/auth/login?next=books";
           });
         } else if (response.status == 403) {
           swal("You'r not Admin !", "Only Admin can Add Book!", "error").then(function () {
-            window.location = "/";
+            window.location = "/books";
           });
         } else {
-          alert("Hello Books");
-
           window.location = "/books/addBook";
         }
       })
