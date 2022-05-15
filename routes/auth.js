@@ -147,7 +147,7 @@ authRouter.post("/login", function (req, res, next) {
     if (password !== ownerPass) {
       return res.status(404).send("not found");
     } else {
-      sign(user, "owner", res);
+      sign(username, "owner", res);
       // console.log(`Token is { ${req.cookies} }`);
     }
   }

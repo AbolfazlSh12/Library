@@ -3,12 +3,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <!-- <link rel="stylesheet" href="/stylesheets/style.css" /> -->
+    <link rel="stylesheet" href="/stylesheets/bookStyle.css" />
     <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
     <title>Library</title>
     <style>
       body {
-        background-color: rgb(243, 255, 251);
+        background-color: rgb(175, 203, 194);
       }
     </style>
   </head>
@@ -18,8 +19,22 @@
     <ul>
       <% for(let i=0; i < books.length; i++) { %>
       <li>
-        <h1><%= books[i].name %></h1>
-        <button data-id="<%= books[i]._id %>" onclick="rent(this)">rent</button>
+        <section id="main">
+          <div class="card"><img class="image cover" src="uploads/<%= books[i].bookImage %>"/>
+            <div class="book-info">
+              <div class="title"><%= books[i].name %></div>
+              <div class="byline">By <%= books[i].author %></div><br>
+              <div class="info">Category: <%= books[i].category %></div>
+              <div class="info">Price: <%= books[i].price %></div>
+              <div class="info">ISBN: <%= books[i].isbn %></div>
+              <div class="rating"><span class="stars"></span><span class="votes">181 votes</span></div>
+              <div class="about">
+                <p>Something about this book.</span>
+              </div>
+            </div>
+            <button data-id="<%= books[i]._id %>" onclick="rent(this)">Rent this book !</button>
+          </div>
+        </section>
       </li>
       <% } %>
     </ul>
@@ -39,10 +54,14 @@
           swal("You'r not logged in !", "You have to login firs.", "error");
           return;
         }
+        if (rawResponse.status === 410) {
+          swal("Not available book !", "This book is not available!", "error");
+          return;
+        }
         if (rawResponse.status !== 200) {
           swal(
-            "Duplicate Book !",
-            "This book is already in your cart.",
+            "Not found book!",
+            "try again later.",
             "error"
           );
           return;

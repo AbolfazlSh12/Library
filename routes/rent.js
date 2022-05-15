@@ -10,6 +10,8 @@ rentRouter.post("/", isAuthenticated, function (req, res) {
   BookDataModel.findOne({ bookId }).then(async (book) => {
     if (!book) {
       res.status(404).send("not found");
+    } else if (book.isAvailable == false) {
+      res.status(410).send("not available"); // 410 (Gone status code)
     } else {
       const userId = req.user._id.toString();
       const price = book.price;
@@ -18,9 +20,10 @@ rentRouter.post("/", isAuthenticated, function (req, res) {
         bookId,
         price,
       });
-      rent
-        .save()
-        .then(() => {
+      rent.save().then(() => {
+          console.log(book.isAvailable);
+          book.isAvailable = false;
+          book.save();
           res.send("ok");
         })
         .catch((err) => {

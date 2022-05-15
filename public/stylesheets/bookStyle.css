@@ -1,0 +1,180 @@
+img {
+    max-width: 100%;
+}
+
+#main {
+    /* background-color: #ccc; */
+    padding: 4em 2em;
+    /* height: 100vh; */
+}
+
+#main .card {
+    position: relative;
+    max-width: 320px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0.125em 0.25em 0.325em rgba(0, 0, 0, .2);
+}
+
+@media (min-width: 600px) {
+    #main .card {
+        max-width: 400px;
+        padding-right: 1em;
+        padding-left: 1em;
+    }
+}
+
+#main .card .book-info {
+    padding-top: 1em;
+    padding-right: 1em;
+    padding-left: 1em;
+    background: #fff;
+}
+
+@media (min-width: 600px) {
+    #main .card .book-info {
+        display: inline-block;
+        width: calc(400px - 50%);
+        padding-right: 0;
+        padding-left: 0;
+        box-shadow: none;
+    }
+}
+
+#main .card .title {
+    margin-bottom: 0.125em;
+    font-size: 1.8em;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+#main .card .byline,
+#main .card .rating {
+    color: #666;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+#main .card .byline {
+    margin-bottom: 0.5em;
+}
+
+#main .card .rating {
+    margin-top: 1em;
+    /* margin-bottom: 1em; */
+}
+
+#main .card .rating .stars {
+    display: inline-block;
+    height: 20px;
+    width: 96px;
+    margin-right: 0.625em;
+    background-image: url('http://ui-cloud.com/res/designmoo/Rating_stars_2/previews/rating_stars.png');
+    background-position: -154px -207px;
+    vertical-align: top;
+}
+
+#main .card .about {
+    position: relative;
+    max-width: 75ch;
+    max-height: 9ch;
+    font-size: 0.975em;
+    line-height: 1.4;
+    overflow: hidden;
+}
+
+#main .card .about .ellipsis {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 1ch;
+    line-height: 1.1;
+    background-color: #fff;
+}
+
+#main .card .image {
+    background: cyan;
+    border: 0;
+}
+
+#main .card .image.cover {
+    position: relative;
+    z-index: 1;
+    display: block;
+    height: 225px;
+    width: 150px;
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0.25em 0.35em 1em rgba(0, 0, 0, .6);
+}
+
+@media (min-width: 600px) {
+    #main .card .image.cover {
+        display: inline-block;
+        margin-top: -2em;
+        margin-right: 0.825em;
+        vertical-align: top;
+    }
+}
+
+#main .card .image.person {
+    height: 25px;
+    width: 25px;
+    margin-right: 0.25em;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+#main .card .likes {
+    margin-top: 1em;
+    padding: 0.625em 1em;
+    border-top: 0.0125em solid #ccc;
+}
+
+@media (min-width: 600px) {
+    #main .card .likes {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+#main .card .likes .name {
+    font-weight: 700;
+}
+
+#main .card .image-container {
+    position: relative;
+}
+
+.info {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.4;
+}
+
+button {
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background: rgb(210, 207, 207);
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+ul {
+    /* border: black 1px solid; */
+    border-radius: 10px;
+    list-style-type: none;
+    height: fit-content;
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    /* border: black 1px solid; */
+    margin: 5px;
+}

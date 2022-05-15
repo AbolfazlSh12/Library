@@ -265,36 +265,3 @@ button.btn:hover::before {
   left: 0.35rem;
 }
 /* Button Style */
-
-ul {
-  border: 4px solid black;
-  padding: 0 20 0 20;
-  border-radius: 10px;
-  list-style-type: none;
-  height: fit-content;
-  width: fit-content;
-  background-color: rgb(191, 246, 227);
-}
-li h1 {
-  color: #2d60cc;
-}
-li #get {
-  text-align: center;
-  border: 2px solid black;
-  border-radius: 10px;
-  padding: 5px;
-  background-color: white;
-  cursor: pointer;
-}
-
-li #imageBox {
-  margin-top: 10px;
-}
-
-li #bookImage {
-  border: solid black 2px;
-  border-radius: 10px;
-  height: 50%;
-  /* width: 50%; */
-  /* height: min-content; */
-}
