@@ -58,6 +58,10 @@
           swal("Not available book !", "This book is not available!", "error");
           return;
         }
+        if (rawResponse.status === 406) {
+          swal("Limit exceeded!", "You can only rent 4 books at a time", "error");
+          return;
+        }
         if (rawResponse.status !== 200) {
           swal(
             "Not found book!",
