@@ -28,9 +28,7 @@ bookRouter.get("/data", async (req, res, next) => {
 
 bookRouter.get("/addBook", isAuthenticated, async (req, res, next) => {
   const token = req.cookies.token;
-  // console.log("Token is : ", token);
   const decoded = jwt_decode(token);
-  console.log("Decoded token is : ", decoded);
   if (decoded.role !== "user") {
     res.render("addBook");
   } else {
@@ -60,7 +58,6 @@ bookRouter.post("/addBook", upload.single("image"), (req, res, next) => {
   }
   const bookImage = file.filename;
   const { name, author, category, price, isbn } = req.body;
-  console.log(req.body);
 
   const book = new BookDataModel({
       name,
@@ -85,7 +82,6 @@ bookRouter.post("/addBook", upload.single("image"), (req, res, next) => {
 /* Send Book Data To DB */
 bookRouter.post("/", isAuthenticated, function(req, res, next) {
   const { name, author, category, price, isbn } = req.body;
-  console.log(req.body);
 
   const book = new BookDataModel({
       name,

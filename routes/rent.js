@@ -6,9 +6,7 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 /* Renting */
 rentRouter.post("/", isAuthenticated, function (req, res) {
-  console.log(req.body);
   const { bookId } = req.body;
-  console.log(bookId);
   BookDataModel.findOne({ bookId }).then(async (book) => {
     if (!book) {
       res.status(404).send("not found");
@@ -23,7 +21,6 @@ rentRouter.post("/", isAuthenticated, function (req, res) {
       rent
         .save()
         .then(() => {
-          console.log("Success book saved :)");
           res.send("ok");
         })
         .catch((err) => {
@@ -31,5 +28,4 @@ rentRouter.post("/", isAuthenticated, function (req, res) {
         });
     }
   });
-  /*  */
 });
