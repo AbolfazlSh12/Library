@@ -1,109 +1,84 @@
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+    <title>Library</title>
+    <style>
+      body {
+        background-color: rgb(225, 255, 244);
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
-  <title>Library</title>
-  <style>
-    body {
-      background-color: rgb(225, 255, 244);
-    }
-  </style>
-</head>
-
-<body>
-  <a id="addBook" onclick="login()"><button type="button">Add Book</button></a>
-  <script src="./javascripts/swal.js"></script>
-  <script>
-    const getData = async () => {
-      const rawResponse = await fetch("http://localhost:3000/books/data", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        success: function (data) {
-          console.log("success", data);
-        },
-      });
-
-      const books = await rawResponse.json();
-
-      books.forEach((book) => {
-        // Book image
-        const box = document.createElement("div");
-        box.setAttribute("id", "imageBox");
-        const image = document.createElement("img");
-        image.setAttribute("id", "bookImage");
-        const bookImagePath = "../uploads/" + book.bookImage;
-        image.setAttribute("src", bookImagePath);
-
-        // Book info
-        const ul = document.createElement("ul");
-        const li = document.createElement("li");
-        const name = document.createElement("h1");
-        const author = document.createElement("h2");
-        const category = document.createElement("h3");
-        const isbn = document.createElement("h3");
-        const price = document.createElement("h3");
-
-        // Buy book
-        const get = document.createElement("h2");
-        get.setAttribute("id", "get");
-        const buy = document.createElement("a");
-        buy.href = "https://www.google.com/";
-
-        li.innerText;
-        name.innerText = book.name;
-        author.innerText = ["Author: " + book.author];
-        category.innerText = ["Category: " + book.category];
-        isbn.innerText = ["Isbn: " + book.isbn];
-        price.innerText = ["Price: " + book.price + "$"];
-        buy.innerText = "";
-        get.innerText = "Buy this book !";
-
-        li.appendChild(box);
-        box.appendChild(image);
-        ul.appendChild(li);
-        li.appendChild(name);
-        li.appendChild(author);
-        li.appendChild(category);
-        li.appendChild(isbn);
-        li.appendChild(price);
-        buy.appendChild(get);
-        li.appendChild(buy);
-        document.body.appendChild(ul);
-      });
-    };
-    getData();
-  </script>
-  <script>
-    function login() {
-      fetch("/books/addBook").then(function (response) {
-        if (response.status == 401) {
-          // console.log(getCookie("token"));
-          swal("You'r not logged in !", "You have to login firs.", "error").then(function () {
-            window.location = "/auth/login?next=books";
-          });
-        } else if (response.status == 403) {
-          swal("You'r not Admin !", "Only Admin can Add Book!", "error").then(function () {
-            window.location = "/books";
-          });
-        } else {
-          window.location = "/books/addBook";
+  <body>
+    <a id="addBook" onclick="auth()"><button type="button">Add Book</button></a>
+    <ul>
+      <% for(let i=0; i < books.length; i++) { %>
+      <li>
+        <h1><%= books[i].name %></h1>
+        <button data-id="<%= books[i]._id %>" onclick="rent(this)">rent</button>
+      </li>
+      <% } %>
+    </ul>
+    <script src="./javascripts/swal.js"></script>
+    <script src="../javascripts/cookie.js"></script>
+    <script>
+      const rent = async (button) => {
+        const bookId = button.dataset.id;
+        const rawResponse = await fetch("/rent", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ bookId }),
+        });
+        if (rawResponse.status === 401) {
+          swal("You'r not logged in !", "You have to login firs.", "error");
+          return;
         }
-      })
-      // const key = getCookie("token");
-      // if (key) {
-      //     window.location = "/addBook";
-      //     return;
-      // }
-
-    }
-  </script>
-</body>
-
+        if (rawResponse.status !== 200) {
+          swal(
+            "Duplicate Book !",
+            "This book is already in your cart.",
+            "error"
+          );
+          return;
+        }
+        swal("Success Add Book!", "Book added in your cart", "success");
+      };
+    </script>
+    <script>
+      function auth() {
+        fetch("/books/addBook").then(function (response) {
+          if (response.status == 401) {
+            // console.log(getCookie("token"));
+            swal(
+              "You'r not logged in !",
+              "You have to login firs.",
+              "error"
+            ).then(function () {
+              window.location = "/auth/login";
+            });
+          } else if (response.status == 403) {
+            swal("You'r not Admin !", "Only Admin can Add Book!", "error").then(
+              function () {
+                window.location = "/books";
+              }
+            );
+          } else {
+            window.location = "/books/addBook";
+          }
+        });
+        // const key = getCookie("token");
+        // if (key) {
+        //     window.location = "/addBook";
+        //     return;
+        // }
+      }
+    </script>
+  </body>
 </html>

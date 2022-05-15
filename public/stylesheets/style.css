@@ -284,6 +284,7 @@ li #get {
   border-radius: 10px;
   padding: 5px;
   background-color: white;
+  cursor: pointer;
 }
 
 li #imageBox {

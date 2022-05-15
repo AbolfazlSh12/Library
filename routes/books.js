@@ -9,9 +9,8 @@ import jwt_decode from "jwt-decode";
 // Get all books from db
 bookRouter.get("/", async (req, res, next) => {
   try {
-    const book = await BookDataModel.find({}, { __v: 0, _id: 0 });
-    // console.log(book);
-    res.render("books", { books: book });
+    const books = await BookDataModel.find({}, { __v: 0 }).lean();
+    res.render("books", { books });
   } catch (err) {
     console.log(err.message);
   }
@@ -20,7 +19,7 @@ bookRouter.get("/", async (req, res, next) => {
 // Get all books from db
 bookRouter.get("/data", async (req, res, next) => {
   try {
-    const book = await BookDataModel.find({}, { __v: 0, _id: 0 });
+    const book = await BookDataModel.find({}, { __v: 0 }).lean();
     res.send(book);
   } catch (err) {
     console.log(err.message);
@@ -31,7 +30,7 @@ bookRouter.get("/addBook", isAuthenticated, async (req, res, next) => {
   const token = req.cookies.token;
   // console.log("Token is : ", token);
   const decoded = jwt_decode(token);
-  // console.log("Decoded token is : ", decoded);
+  console.log("Decoded token is : ", decoded);
   if (decoded.role !== "user") {
     res.render("addBook");
   } else {

@@ -15,6 +15,7 @@ import { bookRouter } from "./routes/books.js";
 import { connectDatabase } from "./db.js";
 // import { addBookRouter } from "./routes/addBook.js";
 import { mediaRouter } from "./routes/media.js";
+import { rentRouter } from "./routes/rent.js";
 
 connectDatabase();
 
@@ -37,6 +38,7 @@ app.use("/users", userRouter);
 app.use("/books", bookRouter);
 // app.use("/addBook", addBookRouter);
 app.use("/uploads", mediaRouter);
+app.use("/rent", rentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

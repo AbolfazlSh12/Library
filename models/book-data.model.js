@@ -7,6 +7,7 @@ const bookDataSchema = new mongoose.Schema({
     price: Number,
     isbn: String,
     bookImage: String,
+    isAvailable: {type: Boolean, default: true},
   });
   
   export const BookDataModel = mongoose.model("BookDataModel", bookDataSchema);
