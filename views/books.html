@@ -8,7 +8,7 @@
     <title>Library</title>
     <style>
       body {
-        background-color: rgb(225, 255, 244);
+        background-color: rgb(243, 255, 251);
       }
     </style>
   </head>
@@ -24,7 +24,6 @@
       <% } %>
     </ul>
     <script src="./javascripts/swal.js"></script>
-    <script src="../javascripts/cookie.js"></script>
     <script>
       const rent = async (button) => {
         const bookId = button.dataset.id;
@@ -55,7 +54,6 @@
       function auth() {
         fetch("/books/addBook").then(function (response) {
           if (response.status == 401) {
-            // console.log(getCookie("token"));
             swal(
               "You'r not logged in !",
               "You have to login firs.",
@@ -73,11 +71,6 @@
             window.location = "/books/addBook";
           }
         });
-        // const key = getCookie("token");
-        // if (key) {
-        //     window.location = "/addBook";
-        //     return;
-        // }
       }
     </script>
   </body>
