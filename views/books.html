@@ -1,100 +1,138 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="/stylesheets/style.css" /> -->
-    <link rel="stylesheet" href="/stylesheets/bookStyle.css" />
-    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
-    <title>Library</title>
-    <style>
-      body {
-        background-color: rgb(175, 203, 194);
-      }
-    </style>
-  </head>
 
-  <body>
-    <a id="addBook" onclick="auth()"><button type="button">Add Book</button></a>
-    <ul>
-      <% for(let i=0; i < books.length; i++) { %>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- <link rel="stylesheet" href="/stylesheets/style.css" /> -->
+  <link rel="stylesheet" href="/stylesheets/bookStyle.css" />
+  <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+  <title>Library</title>
+  <style>
+    body {
+      background-color: rgb(175, 203, 194);
+    }
+  </style>
+</head>
+
+<body>
+  <a id="addBook" onclick="auth()"><button type="button">Add Book</button></a>
+  <ul>
+    <% for(let i=0; i < books.length; i++) { %>
       <li>
         <section id="main">
-          <div class="card"><img class="image cover" src="uploads/<%= books[i].bookImage %>"/>
+          <div class="card"><img class="image cover" src="uploads/<%= books[i].bookImage %>" />
             <div class="book-info">
-              <div class="title"><%= books[i].name %></div>
-              <div class="byline">By <%= books[i].author %></div><br>
-              <div class="info">Category: <%= books[i].category %></div>
-              <div class="info">Price: <%= books[i].price %></div>
-              <div class="info">ISBN: <%= books[i].isbn %></div>
+              <div class="title">
+                <%= books[i].name %>
+              </div>
+              <div class="byline">By <%= books[i].author %>
+              </div><br>
+              <div class="info">Category: <%= books[i].category %>
+              </div>
+              <div class="info">Price: <%= books[i].price %>
+              </div>
+              <div class="info">ISBN: <%= books[i].isbn %>
+              </div>
               <div class="rating"><span class="stars"></span><span class="votes">181 votes</span></div>
               <div class="about">
                 <p>Something about this book.</span>
               </div>
             </div>
-            <button data-id="<%= books[i]._id %>" onclick="rent(this)">Rent this book !</button>
+            <button data-id="<%= books[i]._id %>" onclick="rent(this)">Add to Cart !</button>
           </div>
         </section>
       </li>
       <% } %>
-    </ul>
-    <script src="./javascripts/swal.js"></script>
-    <script>
-      const rent = async (button) => {
-        const bookId = button.dataset.id;
-        const rawResponse = await fetch("/rent", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ bookId }),
+  </ul>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const rent = async (button) => {
+      const bookId = button.dataset.id;
+      const rawResponse = await fetch("http://localhost:3000/cart/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookId }),
+      });
+
+      if (rawResponse.status === 401) {
+        Swal.fire({
+          icon: 'error',
+          title: "You'r not logged in !",
+          text: 'You have to login firs.',
         });
-        if (rawResponse.status === 401) {
-          swal("You'r not logged in !", "You have to login firs.", "error");
-          return;
-        }
-        if (rawResponse.status === 410) {
-          swal("Not available book !", "This book is not available!", "error");
-          return;
-        }
-        if (rawResponse.status === 406) {
-          swal("Limit exceeded!", "You can only rent 4 books at a time", "error");
-          return;
-        }
-        if (rawResponse.status !== 200) {
-          swal(
-            "Not found book!",
-            "try again later.",
-            "error"
-          );
-          return;
-        }
-        swal("Success Add Book!", "Book added in your cart", "success");
-      };
-    </script>
-    <script>
-      function auth() {
-        fetch("/books/addBook").then(function (response) {
-          if (response.status == 401) {
-            swal(
-              "You'r not logged in !",
-              "You have to login firs.",
-              "error"
-            ).then(function () {
-              window.location = "/auth/login";
-            });
-          } else if (response.status == 403) {
-            swal("You'r not Admin !", "Only Admin can Add Book!", "error").then(
-              function () {
-                window.location = "/books";
-              }
-            );
-          } else {
-            window.location = "/books/addBook";
-          }
-        });
+        return;
       }
-    </script>
-  </body>
+      if (rawResponse.status === 410) {
+        Swal.fire({
+          icon: 'error',
+          title: "Not available book !",
+          text: 'This book is not available!',
+        });
+        return;
+      }
+      if (rawResponse.status === 406) {
+        Swal.fire({
+          icon: 'error',
+          title: "Limit exceeded!",
+          text: 'You can only rent 4 books at a time',
+        });
+        return;
+      }
+      if (rawResponse.status === 404) {
+        Swal.fire({
+          icon: 'error',
+          title: "404 Not found book !"
+        })
+        return;
+      }
+      if (rawResponse.status !== 200) {
+        Swal.fire({
+          icon: 'error',
+          title: "Not found book!",
+          text: 'Try again later.',
+        });
+        return;
+      }
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Book added in your cart',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    };
+  </script>
+  <script>
+    function auth() {
+      fetch("/books/addBook").then(function (response) {
+        if (response.status == 401) {
+          Swal.fire({
+            icon: 'error',
+            title: "You'r not logged in !",
+            text: 'You have to login firs.',
+          }).then(function () {
+            window.location = "/auth/login";
+          });
+        } else if (response.status == 403) {
+          Swal.fire({
+            icon: 'error',
+            title: "You'r not Admin !",
+            text: 'Only Admin can Add Book.',
+          }).then(
+            function () {
+              window.location = "/books";
+            }
+          );
+        } else {
+          window.location = "/books/addBook";
+        }
+      });
+    }
+  </script>
+</body>
+
 </html>

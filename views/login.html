@@ -1,73 +1,69 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
-    <title>Library</title>
-  </head>
-  <body>
-    <div id="loginForm">
-      <h1 id="loginTxt">Login Page</h1>
-      <hr class="hr" />
-      <br />
-      <form onsubmit="submitForm(event)">
-        <h2>
-          Username :
-          <input
-            id="username"
-            type="text"
-            name="username"
-            placeholder="Enter your username ..."
-            required="required"
-          />
-        </h2>
-        <h2>
-          Password :
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Enter your password ..."
-            required="required"
-          />
-        </h2>
-        <h2><a href="./login/forgetPassword">Forget password !</a></h2>
-        <input type="submit" />
-      </form>
-    </div>
-    <script src="../javascripts/swal.js"></script>
-    <script>
-      async function submitForm(event) {
-        event.preventDefault();
 
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const rawResponse = await fetch("http://localhost:3000/auth/login/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+  <title>Library</title>
+</head>
+
+<body>
+  <div id="loginForm">
+    <h1 id="loginTxt">Login Page</h1>
+    <hr class="hr" />
+    <br />
+    <form onsubmit="submitForm(event)">
+      <h2>
+        Username :
+        <input id="username" type="text" name="username" placeholder="Enter your username ..." required="required" />
+      </h2>
+      <h2>
+        Password :
+        <input id="password" type="password" name="password" placeholder="Enter your password ..."
+          required="required" />
+      </h2>
+      <h2><a href="./login/forgetPassword">Forget password !</a></h2>
+      <input type="submit" />
+    </form>
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    async function submitForm(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const rawResponse = await fetch("http://localhost:3000/auth/login/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (rawResponse.status !== 200) {
+        Swal.fire({
+          icon: "error",
+          title: "Wrong username or password !",
+          text: "Try again",
+          className: "swal-wide",
         });
-        if (rawResponse.status !== 200) {
-          swal({
-            icon: "error",
-            title: "Wrong username or password !",
-            text: "Try again",
-            className: "swal-wide",
-          });
-          return;
-        }
-
-        const key = await rawResponse.text();
-
-        swal("Good job!", "Success login", "success").then(function () {
-          window.location = "/";
-        });
+        return;
       }
-    </script>
-  </body>
+
+      const key = await rawResponse.text();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Good job!',
+        text: 'Success login',
+      }).then(function () {
+        window.location = "/";
+      });
+    }
+  </script>
+</body>
+
 </html>

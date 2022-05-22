@@ -66,13 +66,15 @@ select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
 input[type=file]::file-selector-button {
   border: 2px solid #6c5ce7;
   padding: .2em .4em;
-  border-radius: .2em;  
+  border-radius: .2em;
   background-color: #a29bfe;
   transition: 1s;
 }
+
 input[type=file]::file-selector-button:hover {
   background-color: #81ecec;
   border: 2px solid #00cec9;
@@ -168,9 +170,11 @@ img {
   color: black;
   margin: auto;
 }
+
 .swal-wide button {
   background-color: #00b7ff;
 }
+
 /* Button Style */
 /* @import url("https://fonts.googleapis.com/css?family=Lato:400,700"); */
 
@@ -183,6 +187,7 @@ img {
   from {
     transform: translate(0rem, 0);
   }
+
   to {
     transform: translate(0rem, 3.5rem);
   }
@@ -192,6 +197,7 @@ img {
   from {
     transform: translate(-11.5rem, 0);
   }
+
   to {
     transform: translate(0rem, 0);
   }
@@ -231,16 +237,14 @@ button.btn::before {
   background-color: #c92918;
   top: -0.75rem;
   left: 0.5rem;
-  animation: topAnimation 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.25s
-    infinite alternate;
+  animation: topAnimation 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.25s infinite alternate;
 }
 
 button.btn::after {
   background-color: #e74c3c;
   top: 3rem;
   left: 13rem;
-  animation: bottomAnimation 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s
-    infinite alternate;
+  animation: bottomAnimation 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s infinite alternate;
 }
 
 button.btn:hover {
@@ -264,4 +268,11 @@ button.btn:hover::before {
   top: 0.5rem;
   left: 0.35rem;
 }
+
 /* Button Style */
+
+a #cart {
+  border-radius: 10px;
+  height: 80px;
+  width: 80px;
+}

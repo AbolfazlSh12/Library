@@ -29,7 +29,7 @@
         <br /><br />
         <input type="submit" />
     </form>
-    <script src="../javascripts/swal.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         async function submitForm(form, event) {
             event.preventDefault();
@@ -45,16 +45,20 @@
                 })
                 .then(function (text) {
                     // console.log(text);
-                    swal("Good job!", "Success add book!", "success").then(function () {
-                        window.location = "/books";
-                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Good job!',
+                        text: 'Success add book!',
+                    })
+                        .then(function () {
+                            window.location = "/books";
+                        });
                 })
                 .catch(function (err) {
-                    swal({
+                    Swal.fire({
                         icon: "error",
                         title: "Failed to add book !",
                         text: "You have to login first",
-                        className: "swal-wide",
                     });
                 });
         }

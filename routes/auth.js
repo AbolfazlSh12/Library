@@ -4,6 +4,7 @@ import rand from "random-key";
 import nodemailer from "nodemailer";
 import "dotenv/config";
 import { UserDataModel } from "../models/user-data.model.js";
+import { CartDataModel } from "../models/cart-data.model.js";
 import jwt from "jsonwebtoken";
 import jwt_decode from "jwt-decode";
 import { isAuthenticated } from "../middlewares/auth.js";
@@ -58,12 +59,9 @@ authRouter.get("/login/resetPassword", function (req, res, next) {
 const sendVerificationEmail = (address, code, username) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
-    // host: "smtp.gmail.com",
-    // port: 465,
-    // secure: true,
     auth: {
-      user: "simple.learner.110@gmail.com",
-      pass: "LiveTheMomentNow",
+      user: process.env.GMAIL_ACCOUNT,
+      pass: process.env.GMAIL_PASSWORD,
     },
   });
 
@@ -97,9 +95,9 @@ authRouter.get("/changeRole", isAuthenticated, function (req, res) {
 });
 
 authRouter.get("/logout", function (req, res, next) {
-  console.log(req.cookies);
+  // console.log(req.cookies);
   req.cookies = null;
-  console.log(req.cookies);
+  // console.log(req.cookies);
   res.clearCookie("token");
   res.redirect("/");
   // res.end();
@@ -124,16 +122,26 @@ authRouter.post("/signup", function (req, res, next) {
     });
     user
       .save()
-      .then(async (user) => {
+      .then((user) => {
         const role = user.role;
         sign(user, role, res);
         console.log("JWT Success !");
         sendVerificationEmail(email, random, username);
+        return UserDataModel.findOne({ username: username })
       })
-      .catch(() => {
-        res.status(409);
-        res.send("Signup error !");
-      });
+      .then((user) => {
+        console.log(user);
+        const userId = user._id.toString();
+        console.log(userId);
+        const userCart = new CartDataModel({ userId });
+
+        return userCart
+          .save()
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(409).send("Duplicate Request!");
+      })
   }
 });
 
@@ -155,7 +163,7 @@ authRouter.post("/login", function (req, res, next) {
   UserDataModel.findOne({ username, password })
     .then(async (user) => {
       const role = user.role;
-      console.log(role);
+      // console.log(role);
       if (!user) {
         res.status(404).send("not found");
       } else {

@@ -27,7 +27,7 @@
       <br />
       <input type="submit" value="submit" />
     </form>
-    <script src="../javascripts/swal.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       async function submitForm(event) {
         event.preventDefault();
@@ -47,7 +47,7 @@
         );
         if (rawResponse.status !== 200) {
           console.log("Error in signup !");
-          swal({
+          Swal.fire({
             icon: "error",
             title: "Oops !",
             text: "Something went wrong. Please try again",
@@ -55,7 +55,11 @@
           return;
         } else {
           console.log("Success !");
-          swal("Role Changed .", "Success change role !", "success").then(
+          Swal.fire({
+            icon: "success",
+            title: "Success change role !",
+            text: "Role Changed.",
+          }).then(
             function () {
               window.location = "/";
             }
