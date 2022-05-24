@@ -5,7 +5,7 @@ import { UserDataModel } from "../models/user-data.model.js";
 export const isAuthenticated = (req, res, next) => {
   const token = req.cookies?.token;
   if (!token) {
-    console.log("Token is : ", token);
+    // console.log("Token is : ", token);
     return res.status(401).send("You'r not logged in !");
   }
 

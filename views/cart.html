@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="/stylesheets/bookStyle.css" />
+    <title>Library</title>
+    <style>
+        body {
+            background-color: #ddd;
+        }
+
+        .btn {
+            background: #999;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Your Books: </h1>
+    <ul>
+        <% for(let i=0; i < books.length; i++) { %>
+            <li>
+                <section id="main">
+                    <div class="card"><img class="image cover" src="uploads/<%= books[i].bookImage %>" />
+                        <div class="book-info">
+                            <div class="title">
+                                <%= books[i].name %>
+                            </div>
+                            <div class="byline">By <%= books[i].author %>
+                            </div><br>
+                            <div class="info">Category: <%= books[i].category %>
+                            </div>
+                            <div class="info">Price: <%= books[i].price %>
+                            </div>
+                            <div class="info">ISBN: <%= books[i].isbn %>
+                            </div>
+                            <div class="rating"><span class="stars"></span><span class="votes">181 votes</span></div>
+                            <div class="about">
+                                <span>Something about this book. Something about this book. Something about this book.
+                                    Something about this book.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </li>
+            <% } %>
+    </ul>
+    <br><br>
+
+    <button class="btn">Rent</button>
+</body>
+
+</html>

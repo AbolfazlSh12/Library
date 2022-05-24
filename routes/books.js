@@ -7,7 +7,7 @@ import multer from "multer";
 import jwt_decode from "jwt-decode";
 
 // Get all books from db
-bookRouter.get("/", async (req, res, next) => {
+bookRouter.get("/", async (req, res) => {
   try {
     const books = await BookDataModel.find({}, { __v: 0 }).lean();
     res.render("books", { books });
@@ -17,7 +17,7 @@ bookRouter.get("/", async (req, res, next) => {
 });
 
 // Get all books from db
-bookRouter.get("/data", async (req, res, next) => {
+bookRouter.get("/data", async (req, res) => {
   try {
     const book = await BookDataModel.find({}, { __v: 0 }).lean();
     res.send(book);
@@ -38,11 +38,11 @@ bookRouter.get("/addBook", isAuthenticated, async (req, res, next) => {
 
 /* Set Destination For Multer */
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-      cb(null, "./uploads");
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
   },
-  filename: function(req, file, cb) {
-      cb(null, randomUUID() + ".png");
+  filename: function (req, file, cb) {
+    cb(null, randomUUID() + ".png");
   },
 });
 
@@ -52,51 +52,51 @@ let upload = multer({ storage: storage });
 bookRouter.post("/addBook", upload.single("image"), (req, res, next) => {
   const file = req.file;
   if (!file) {
-      const error = new Error("Please upload a file");
-      error.httpStatusCode = 400;
-      return next(error);
+    const error = new Error("Please upload a file");
+    error.httpStatusCode = 400;
+    return next(error);
   }
   const bookImage = file.filename;
   const { name, author, category, price, isbn } = req.body;
 
   const book = new BookDataModel({
-      name,
-      author,
-      category,
-      price,
-      isbn,
-      bookImage,
+    name,
+    author,
+    category,
+    price,
+    isbn,
+    bookImage,
   });
 
   book
-      .save()
-      .then((doc) => {
-          return res.send(doc);
-      })
-      .catch((err) => {
-          console.log(err);
-          res.send("Failed to add book !");
-      });
+    .save()
+    .then((doc) => {
+      return res.send(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send("Failed to add book !");
+    });
 });
 
 /* Send Book Data To DB */
-bookRouter.post("/", isAuthenticated, function(req, res, next) {
+bookRouter.post("/", isAuthenticated, function (req, res, next) {
   const { name, author, category, price, isbn } = req.body;
 
   const book = new BookDataModel({
-      name,
-      author,
-      category,
-      price,
-      isbn,
+    name,
+    author,
+    category,
+    price,
+    isbn,
   });
   book
-      .save()
-      .then((doc) => {
-          return res.send(doc);
-      })
-      .catch((err) => {
-          console.log(err);
-          res.send("Failed to add book !");
-      });
+    .save()
+    .then((doc) => {
+      return res.send(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send("Failed to add book !");
+    });
 });
