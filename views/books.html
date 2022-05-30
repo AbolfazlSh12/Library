@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <a id="addBook" onclick="auth()"><button type="button">Add Book</button></a>
+  <a id="addBook" onclick="authAddBook()"><button type="button">Add Book</button></a>
   <ul>
     <% for(let i=0; i < books.length; i++) { %>
       <li>
@@ -42,6 +42,8 @@
               </div>
             </div>
             <button data-id="<%= books[i]._id %>" onclick="rent(this)">Add to Cart !</button>
+            <img data-id="<%= books[i]._id %>" src="../images/delete.png" alt="Delete" id="delete"
+              onclick="removeBook(this)">
           </div>
         </section>
       </li>
@@ -109,7 +111,7 @@
     };
   </script>
   <script>
-    function auth() {
+    function authAddBook() {
       fetch("/books/addBook").then(function (response) {
         if (response.status == 401) {
           Swal.fire({
@@ -133,6 +135,41 @@
           window.location = "/books/addBook";
         }
       });
+    }
+  </script>
+  <script>
+    const removeBook = async (button) => {
+      const bookId = button.dataset.id;
+      const rawResponse = await fetch("http://localhost:3000/books/removeBook/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookId }),
+      });
+
+      if (rawResponse.status === 403) {
+        Swal.fire({
+          icon: 'error',
+          title: "Permission denied!",
+          text: 'Only Admins can remove Book'
+        })
+      } else if (rawResponse.status !== 200) {
+        Swal.fire({
+          icon: 'error',
+          title: "Error !",
+        })
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: "Success remove book!",
+        }).then(
+          function () {
+            window.location = "/books";
+          }
+        )
+      }
     }
   </script>
 </body>

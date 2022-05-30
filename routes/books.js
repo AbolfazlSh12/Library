@@ -80,7 +80,7 @@ bookRouter.post("/addBook", upload.single("image"), (req, res, next) => {
 });
 
 /* Send Book Data To DB */
-bookRouter.post("/", isAuthenticated, function (req, res, next) {
+bookRouter.post("/", isAuthenticated, function (req, res) {
   const { name, author, category, price, isbn } = req.body;
 
   const book = new BookDataModel({
@@ -100,3 +100,16 @@ bookRouter.post("/", isAuthenticated, function (req, res, next) {
       res.send("Failed to add book !");
     });
 });
+
+bookRouter.post("/removeBook", isAuthenticated, async (req, res) => {
+  const token = req.cookies.token;
+  const decoded = jwt_decode(token);
+  if (decoded.role === "user") {
+    res.status(403).send('Forbidden');
+  } else {
+    const bookId = req.body.bookId;
+    console.log(bookId);
+    await BookDataModel.deleteOne({ _id: bookId });
+    res.status(200).send('success');
+  }
+})

@@ -178,3 +178,19 @@ li {
     /* border: black 1px solid; */
     margin: 5px;
 }
+
+#deleteBook {
+    padding: 0;
+    margin: 0;
+    height: 20%;
+    width: 40%;
+    background: none;
+    float: right;
+}
+
+#delete {
+    background: none;
+    width: 12%;
+    float: right;
+    cursor: pointer;
+}
