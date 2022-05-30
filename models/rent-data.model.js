@@ -2,7 +2,12 @@ import mongoose from "mongoose";
 
 const rentDataSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: true, index: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserDataModel",
+      required: true,
+      index: true
+    },
     books: [
       {
         bookId: { type: mongoose.Schema.Types.ObjectId, ref: "BookDataModel" },

@@ -65,6 +65,29 @@
                     "Content-Type": "application/json",
                 },
             });
+
+            if (rawResponse.status === 204) {
+                Swal.fire({
+                    icon: 'error',
+                    title: "The cart is empty !",
+                    text: 'Please select some books first.',
+                })
+            } else if (rawResponse.status !== 200) {
+                Swal.fire({
+                    icon: 'error',
+                    title: "Error",
+                })
+            } else {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Success rent books!',
+                    showConfirmButton: false,
+                    timer: 1800,
+                }).then(function () {
+                    window.location = "/cart";
+                });
+            }
         }
     </script>
 </body>

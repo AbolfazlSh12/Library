@@ -9,22 +9,27 @@ import { isAuthenticated } from "../middlewares/auth.js";
 rentRouter.post('/', isAuthenticated, async (req, res) => {
   const userId = req.user._id.toString();
   const cartItem = await CartDataModel.findOne({ userId });
-  const booksId = cartItem.books.map(book => book.bookId.toString());
-  const books = await BookDataModel.find({ _id: { $in: booksId } }).lean();
+  if (cartItem.books.length == 0) {
+    res.status(204).send('no content');
+  } else {
+    const booksId = cartItem.books.map(book => book.bookId.toString());
+    const books = await BookDataModel.find({ _id: { $in: booksId } }).lean();
 
-  const rentBooks = [];
-  for (const book of books) {
-    const id = book._id.toString();
-    const price = book.price;
-    const rentBook = { id, price };
-    rentBooks.push(rentBook);
+    const rentBooks = [];
+    for (const book of books) {
+      const id = book._id.toString();
+      const price = book.price;
+      const rentBook = { id, price };
+      rentBooks.push(rentBook);
+    }
+
+    const memberId = req.user._id;
+    const rent = await new RentDataModel({
+      userId: memberId,
+      books: rentBooks
+    });
+    await rent.save();
+    await CartDataModel.updateOne({ userId: rent.userId }, { books: [] });
+    res.status(200).send('Success');
   }
-  console.log(rentBooks);
-
-  const rent = await new RentDataModel({
-    userId,
-    books:rentBooks
-  });
-  console.log(rent);
-  rent.save();
 })
