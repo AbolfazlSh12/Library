@@ -52,7 +52,21 @@
     </ul>
     <br><br>
 
-    <button class="btn">Rent</button>
+    <button class="btn" onclick="rent(this)">Rent</button>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        const rent = async () => {
+            const rawResponse = await fetch("http://localhost:3000/rent/", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+        }
+    </script>
 </body>
 
 </html>

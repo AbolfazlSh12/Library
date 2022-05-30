@@ -11,9 +11,8 @@ cartRouter.get("/", isAuthenticated, async (req, res) => {
 
         const cartItem = await CartDataModel.findOne({ userId });
         const booksId = cartItem.books.map(book => book.bookId.toString());
-        const books = await BookDataModel.find({_id:{$in:booksId}}).lean()
-       
-        console.log(books);
+        const books = await BookDataModel.find({ _id: { $in: booksId } }).lean();
+
         res.render("cart", { books });
     } catch (err) {
         console.log(err.message);
