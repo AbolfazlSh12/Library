@@ -22,18 +22,15 @@ const sign = (user, role, res) => {
   );
 };
 
-authRouter.get("/login", function (req, res, next) {
+authRouter.get("/login", function (req, res) {
   res.render("login");
 });
 
-authRouter.get("/signup", function (req, res, next) {
+authRouter.get("/signup", function (req, res) {
   res.render("signup");
 });
 
-authRouter.get("/signup/verify", function (req, res, next) {
-  // res.render("verify");
-  // console.log(req.query.username);
-  // console.log(req.query.token);
+authRouter.get("/signup/verify", function (req, res) {
   const username = req.query.username;
   const verifyEmailToken = req.query.token;
   UserDataModel.findOne({ username, verifyEmailToken }).then(async (user) => {
@@ -47,11 +44,11 @@ authRouter.get("/signup/verify", function (req, res, next) {
   });
 });
 
-authRouter.get("/login/forgetPassword", function (req, res, next) {
+authRouter.get("/login/forgetPassword", function (req, res) {
   res.render("forgetPass");
 });
 
-authRouter.get("/login/resetPassword", function (req, res, next) {
+authRouter.get("/login/resetPassword", function (req, res) {
   console.log("It's a reset password page");
   res.render("resetPass");
 });
@@ -94,7 +91,7 @@ authRouter.get("/changeRole", isAuthenticated, function (req, res) {
   }
 });
 
-authRouter.get("/logout", function (req, res, next) {
+authRouter.get("/logout", function (req, res) {
   // console.log(req.cookies);
   req.cookies = null;
   // console.log(req.cookies);
@@ -104,7 +101,7 @@ authRouter.get("/logout", function (req, res, next) {
 });
 
 /* Email Verification */
-authRouter.post("/signup", function (req, res, next) {
+authRouter.post("/signup", function (req, res) {
   const { email, username } = req.body;
   if (username == process.env.SUPERUSER_USERNAME) {
     res.status(409).send("Duplicate username !");
@@ -145,7 +142,7 @@ authRouter.post("/signup", function (req, res, next) {
   }
 });
 
-authRouter.post("/login", function (req, res, next) {
+authRouter.post("/login", function (req, res) {
   const { username, password } = req.body;
 
   const ownerName = process.env.SUPERUSER_USERNAME;
@@ -178,7 +175,7 @@ authRouter.post("/login", function (req, res, next) {
 });
 
 /* Forget Password */
-authRouter.post("/login/forgetPassword", function (req, res, next) {
+authRouter.post("/login/forgetPassword", function (req, res) {
   const email = req.body.email;
   // console.log(email);
   var transporter = nodemailer.createTransport({

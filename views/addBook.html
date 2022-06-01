@@ -37,13 +37,13 @@
 
             const formData = new FormData(form);
             fetch("addBook", {
-                method: "post",
+                method: "POST",
                 body: formData,
             })
                 .then(function (res) {
                     return res.text();
                 })
-                .then(function (text) {
+                .then(function () {
                     // console.log(text);
                     Swal.fire({
                         icon: 'success',

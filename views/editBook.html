@@ -1,0 +1,73 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../images/icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Library</title>
+</head>
+
+<body>
+    <h1>Edit Book</h1>
+    <hr class="hr" />
+    <br />
+    <form onsubmit="submitForm(this, event)" id="form">
+        <h2>Name :</h2>
+        <input id="name" type="text" name="name" value="<%= book.name %>" required="required" />
+        <h2>Author :</h2>
+        <input id="author" type="text" name="author" value="<%= book.author %>" required="required" />
+        <h2>Category :</h2>
+        <input id="category" type="text" name="category" value="<%= book.category %>" required="required" />
+        <h2>Price :</h2>
+        <input id="price" type="number" name="price" value="<%= book.price %>" required="required" />
+        <h2>ISBN :</h2>
+        <input id="isbn" type="text" name="isbn" value="<%= book.isbn %>" required="required" />
+        <br /><br />
+        <input id="image" type="file" name="image" required="required" />
+        <br /><br />
+        <input type="submit" />
+    </form>
+
+    <!-- SweetAlert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Send Book Info -->
+    <script>
+        async function submitForm(form, event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            console.log(form);
+            console.log(formData.get("price"));
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            fetch(`editBook?bookId=${params.bookId}`, {
+                method: "POST",
+                body: formData,
+            }).then(function (res) {
+                return res.text();
+            }).then(function () {
+                // console.log(text);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Good job!',
+                    text: 'Success update book!',
+                }).then(function () {
+                    window.location = "/books"
+                })
+            })
+                .catch(function (err) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Failed to add book !",
+                        text: "You have to login first",
+                    })
+                })
+        }
+    </script>
+</body>
+
+</html>
